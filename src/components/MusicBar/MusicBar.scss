@@ -1,0 +1,11 @@
+._music-bar {
+  height: 60px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  box-shadow: 0 -1px 5px $barBgColor;
+  // background: rgba($color: $barBgColor, $alpha: .8);
+  padding: 5px 20px;
+  display: flex;
+  align-items: center;
+}
