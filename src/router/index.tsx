@@ -8,10 +8,11 @@ export default function () {
   return (
     <BrowserRouter>
       <Player children />
-      <Switch>
-        <Route exact path="/" component={DefaultLayout} ></Route>
-        <Route exact path="/app" component={App} ></Route>
-      </Switch>
+      <DefaultLayout>
+        <Switch>
+          <Route exact path="/app" component={App} ></Route>
+        </Switch>
+      </DefaultLayout>
     </BrowserRouter>
   )
 }

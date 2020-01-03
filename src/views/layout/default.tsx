@@ -1,24 +1,35 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-// const defaultHeader = React.lazy(() => import('./_parts/header'));
 import MyHeader from './_parts/header'
-import { Button } from 'antd-mobile';
 import MusicBar from '../../components/MusicBar'
+import './_styles/default-layout.scss'
+import http from '../../api/http'
 
 export interface Props {
   children: React.ReactNode;
 }
 
-const defaultLayout: React.FC<Props> = (props) => {
-  return (
-    <>
-      <MyHeader />
-      <Button onClick={ () => { (window as any).player.play() } }>play.</Button>
-      <Link to="/app">11</Link>
-      <MusicBar />
-      { props.children }
-    </>
-  )
-}
+export default class DefaultLayout extends React.Component<Props, any> {
+  // constructor(props: Props) {
+  //   super(props)
+  // }
 
-export default defaultLayout
+  componentDidMount() {
+    http.get('/user/followeds?uid=32953014')
+  }
+
+  render() {
+    return (
+      <>
+        <div className="_header">
+          <MyHeader />
+        </div>
+        <div className="_main">
+          { this.props.children }
+        </div>
+        <div className="_footer">
+          <MusicBar />
+        </div>
+      </>
+    )
+  }
+}

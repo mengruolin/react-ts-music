@@ -6,12 +6,11 @@ const App: React.FC = () => {
   // console.log(1);
   
   const [count, setCount] = useState(0);
-  const [num, setNum] = useState(0);
-
   useEffect(() => {
     console.log(1);
     
-  }, [num])
+  })
+
   return (
     <div className="App">
       <header className="App-header">
