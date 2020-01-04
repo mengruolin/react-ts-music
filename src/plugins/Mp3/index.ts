@@ -1,7 +1,7 @@
 export interface playListI {
   name: string
   tracks: string
-  url: string
+  id: string
   sourceList?: playListI[]
 }
 
@@ -14,17 +14,17 @@ export default class Mp3 {
   readonly defaultList = [{
     name: 'default',
     tracks: '',
-    url: 'https://music.163.com/song/media/outer/url?id=536018'
+    id: 'https://music.163.com/song/media/outer/url?id=536018'
   },
   {
     name: 'default',
     tracks: '',
-    url: 'https://music.163.com/song/media/outer/url?id=22761030'
+    id: 'https://music.163.com/song/media/outer/url?id=22761030'
   },
   {
     name: 'default',
     tracks: '',
-    url: 'https://music.163.com/song/media/outer/url?id=29792560'
+    id: 'https://music.163.com/song/media/outer/url?id=29792560'
   }]
 
   public id: string = ''
@@ -34,13 +34,14 @@ export default class Mp3 {
   private buffer: boolean = false
   private inMusic: number = 0
   private nextPlay: boolean = false
+  private musicTitle: string = 'https://music.163.com/song/media/outer/url?id='
 
 
   public init(config?: object) {
 
     this.player = document.getElementById(this.id) as HTMLAudioElement
     
-    this.player.src = this.playList[this.inMusic].url
+    this.player.src = this.playList[this.inMusic].id
 
     this.player.addEventListener("canplaythrough", (event) => {
       console.log('buffer is true')
@@ -57,6 +58,11 @@ export default class Mp3 {
 
       this.buffer = false;
       this.evLoop()
+    })
+
+    this.player.addEventListener('error', (err) => {
+      // console.log(err); 向外抛出err
+      this.nextMusic()
     })
   }
 
@@ -84,6 +90,10 @@ export default class Mp3 {
 
   public replaceMusicList(musicList: playListI[]): void {
     this.playList = musicList
+
+    let num = Math.floor(Math.random() * this.playList.length)
+
+    this.player.src = this.musicTitle + this.playList[num].id
   }
 
   public lastMusic(): void {
@@ -91,7 +101,7 @@ export default class Mp3 {
       this.inMusic = this.playList.length
     }
 
-    this.player.src = this.playList[++this.inMusic].url
+    this.player.src = this.musicTitle + this.playList[++this.inMusic].id
   }
 
   public nextMusic(): void {
@@ -99,7 +109,7 @@ export default class Mp3 {
       this.inMusic = -1
     }
 
-    this.player.src = this.playList[++this.inMusic].url
+    this.player.src = this.musicTitle + this.playList[++this.inMusic].id
   }
 
   private evLoop(): void {
@@ -130,7 +140,7 @@ export default class Mp3 {
 
     this.inMusic = randomNum
     this.nextPlay = true
-    this.player.src = this.playList[this.inMusic].url
+    this.player.src = this.musicTitle + this.playList[this.inMusic].id
   }
 
   private orderPlay(): void {

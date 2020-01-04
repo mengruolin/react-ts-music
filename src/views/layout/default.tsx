@@ -1,35 +1,31 @@
-import React from 'react'
-import MyHeader from './_parts/header'
-import MusicBar from '../../components/MusicBar'
+import React, { useEffect } from 'react'
+// import MyHeader from './_parts/header'
+// import MusicBar from '../../components/MusicBar'
 import './_styles/default-layout.scss'
-import http from '../../api/http'
 
-export interface Props {
+interface Props {
   children: React.ReactNode;
 }
 
-export default class DefaultLayout extends React.Component<Props, any> {
-  // constructor(props: Props) {
-  //   super(props)
-  // }
-
-  componentDidMount() {
-    http.get('/user/followeds?uid=32953014')
-  }
-
-  render() {
-    return (
-      <>
-        <div className="_header">
+const DefaultLayout: React.FC<Props> = (props: Props) => {
+  
+  useEffect(() => {
+    console.log(1);
+  }, [])
+  
+  return(
+    <>
+        {/* <div className="_header">
           <MyHeader />
-        </div>
+        </div> */}
         <div className="_main">
-          { this.props.children }
+          { props.children }
         </div>
-        <div className="_footer">
+        {/* <div className="_footer">
           <MusicBar />
-        </div>
+        </div> */}
       </>
-    )
-  }
+  )
 }
+
+export default DefaultLayout

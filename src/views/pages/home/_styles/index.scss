@@ -1,0 +1,36 @@
+$playBtn: 50px;
+$nextBtn: 35px;
+
+._home {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #fefefe;
+
+  ._home-btn {
+    border-radius: 50%;
+    // box-shadow: 2px 2px 2px rebeccapurple;
+    background: rebeccapurple;
+    border: rebeccapurple;
+  }
+  ._main {
+    height: 60%;
+    width: 100%;
+    background: rosybrown;
+  }
+  .btn-group {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .play-btn {
+      width: $playBtn;
+      height: $playBtn;
+    }
+    .next-btn {
+      margin-left: 20px;
+      height: $nextBtn;
+      width: $nextBtn;
+    }
+  }
+}
