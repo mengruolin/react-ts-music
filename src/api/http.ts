@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
-axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = process.env.REACT_APP_PROXY_URL
 
 axios.interceptors.request.use(config => {
   // Do something before request is sent
