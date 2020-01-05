@@ -1,5 +1,6 @@
-$playBtn: 50px;
-$nextBtn: 35px;
+$playBtn: 18vw;
+$nextBtn: 14vw;
+$btnColor: #0fabbc;
 
 ._home {
   width: 100vw;
@@ -9,14 +10,57 @@ $nextBtn: 35px;
 
   ._home-btn {
     border-radius: 50%;
+    position: relative;
     // box-shadow: 2px 2px 2px rebeccapurple;
-    background: rebeccapurple;
-    border: rebeccapurple;
+    background: $btnColor;
+    color: #fefefe;
+    border: $btnColor;
   }
   ._main {
     height: 60%;
     width: 100%;
-    background: rosybrown;
+    padding: 10% 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    ._music-cover {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      background: #fefefe;
+      //overflow: hidden;
+      border: #e2e2e2 solid 1px;
+      box-shadow: 5px 2px 15px #4e4b4b;
+      border-radius: 2%;
+      // &::after {
+      //   content: "";
+      //   display: block;
+      //   width: 15%;
+      //   height: 15%;
+      //   border-radius: 50%;
+      //   border: #e2e2e2 solid 1px;
+      //   position: absolute;
+      //   bottom: -7%;
+      //   right: -5%;
+      //   background: #ffffff;
+      // }
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    ._music-title {
+      width: 60%;
+      margin-bottom: 20px;
+      overflow: hidden;
+      .scroll-text {
+        font-size: 4vw;
+        white-space: nowrap;
+        display: inline-block;
+        animation: 20s wordsLoop linear infinite normal;
+      }
+    }
   }
   .btn-group {
     position: relative;
@@ -24,13 +68,31 @@ $nextBtn: 35px;
     justify-content: center;
     align-items: center;
     .play-btn {
+      margin-left: 2vw;
       width: $playBtn;
       height: $playBtn;
+      i {
+        font-size: 8vw;
+      }
     }
-    .next-btn {
-      margin-left: 20px;
+    .prev-btn, .next-btn {
       height: $nextBtn;
       width: $nextBtn;
+      i {
+        font-size: 5vw;
+      }
     }
+    .next-btn {
+      margin-left: 2vw;
+    }
+  }
+}
+
+@keyframes wordsLoop {
+  0% {
+      transform: translateX(200px);
+  }
+  100% {
+      transform: translateX(-100%);
   }
 }

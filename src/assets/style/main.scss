@@ -1,7 +1,12 @@
 @import './normalize.scss';
 @import './config.scss';
+@import './iconFont.scss';
 
 div {box-sizing: border-box;}
 .c-w100 {
-  width: 100px;
+  width: 10vw;
 }
+
+
+// 水平垂直居中
+.x-y-center {position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);}

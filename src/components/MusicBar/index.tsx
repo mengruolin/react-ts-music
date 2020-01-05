@@ -17,7 +17,6 @@ export default class MusicBar extends Component<Props, State> {
   render() {
     return (
       <div className="_music-bar">
-        i
       </div>
     )
   }

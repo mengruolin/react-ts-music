@@ -35,6 +35,8 @@ export default class Mp3 {
   private inMusic: number = 0
   private nextPlay: boolean = false
   private musicTitle: string = 'https://music.163.com/song/media/outer/url?id='
+  private onIndexFun: Function[] = []
+
 
 
   public init(config?: object) {
@@ -44,13 +46,21 @@ export default class Mp3 {
     this.player.src = this.playList[this.inMusic].id
 
     this.player.addEventListener("canplaythrough", (event) => {
-      console.log('buffer is true')
+      // console.log('buffer is true')
       
       this.buffer = true
 
       if (this.nextPlay) {
         this.player.play()
       }
+
+      console.log(this.onIndexFun);
+      
+
+      this.onIndexFun.forEach((fn: any) => {
+        console.log(111);
+        fn(this.inMusic)
+      })
     });
 
     this.player.addEventListener('ended', () => {
@@ -68,12 +78,16 @@ export default class Mp3 {
 
   
 
-  public play() {
+  public play(): void {
     if (this.buffer) {
       this.player.play()
     } else {
-      throw new Error('歌曲未缓冲完成')
+      // throw new Error('歌曲未缓冲完成')
     }
+  }
+
+  public pause(): void {
+    this.player.pause()
   }
 
   public get musicList(): playListI[] {
@@ -93,15 +107,19 @@ export default class Mp3 {
 
     let num = Math.floor(Math.random() * this.playList.length)
 
-    this.player.src = this.musicTitle + this.playList[num].id
+    this.inMusic = num
+
+    this.player.src = this.musicTitle + this.playList[this.inMusic].id
   }
 
-  public lastMusic(): void {
+  public prevMusic(): void {
     if (this.inMusic === 0) {
       this.inMusic = this.playList.length
     }
 
     this.player.src = this.musicTitle + this.playList[++this.inMusic].id
+
+    this.play()
   }
 
   public nextMusic(): void {
@@ -110,6 +128,12 @@ export default class Mp3 {
     }
 
     this.player.src = this.musicTitle + this.playList[++this.inMusic].id
+
+    this.play()
+  }
+
+  public onIndex(Fun: Function): void {
+    this.onIndexFun.push(Fun)
   }
 
   private evLoop(): void {
