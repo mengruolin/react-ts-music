@@ -26,7 +26,7 @@ export default class Player extends Component<Props, State> {
     const player = new Mp3('globalAudio')
     window.player = player
 
-    player.init()
+    // player.init()
   }
 
   render () {

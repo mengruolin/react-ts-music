@@ -2,7 +2,8 @@ import http from './http'
 import {
   Api_artistList,
   Api_likelist,
-  Api_playlistDetail
+  Api_playlistDetail,
+  Api_lyric,
 } from './types'
 
 export const createRequest = (methods: string, api: string) => {
@@ -17,3 +18,5 @@ export const getArtList = createRequest('get', Api_artistList)
 export const getLikeList = createRequest('get', Api_likelist)
 
 export const getPlaylistDetail = createRequest('get', Api_playlistDetail)
+
+export const getLyric = createRequest('get', Api_lyric)

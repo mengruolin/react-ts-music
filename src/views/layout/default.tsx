@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-// import MyHeader from './_parts/header'
+import MyHeader from './_parts/header'
 // import MusicBar from '../../components/MusicBar'
 import './_styles/default-layout.scss'
 
@@ -15,9 +15,9 @@ const DefaultLayout: React.FC<Props> = (props: Props) => {
   
   return(
     <>
-        {/* <div className="_header">
+        <div className="_header">
           <MyHeader />
-        </div> */}
+        </div>
         <div className="_main">
           { props.children }
         </div>

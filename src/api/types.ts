@@ -32,7 +32,7 @@ export const Api_searchSuggest: string = '/search/suggest'  //搜索建议
 
 export const Api_searchMultimatch: string = '/search/multimatch'  //搜索多重匹配
 
-export const Api_lyric: string = '/lyric?id'  //获取歌词
+export const Api_lyric: string = '/lyric'  //获取歌词
 
 export const Api_topSong: string = '/top/song'  //新歌速递
 

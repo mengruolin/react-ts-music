@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { NavBar, Icon } from 'antd-mobile';
+import '../_styles/de-header.scss'
 
 interface props {
 }
@@ -19,16 +19,7 @@ export default class MyHeader extends React.Component<props, state> {
 
   render() {
     return(
-      <>
-        <NavBar
-          mode="dark"
-          leftContent="Music"
-          rightContent={[
-            <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
-            <Icon key="1" type="ellipsis" />,
-          ]}
-        >NavBar</NavBar>
-      </>
+      <div className="_de-header"></div>
     )
   }
 }

@@ -155,5 +155,6 @@
     "plugins": [
       ["import", { "libraryName": "antd-mobile", "style": "css" }]
     ]
-  }
+  },
+  "envPublicUrl": "./"
 }
