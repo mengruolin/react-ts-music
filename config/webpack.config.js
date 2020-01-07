@@ -422,6 +422,15 @@ module.exports = function(webpackEnv) {
                 inputSourceMap: shouldUseSourceMap,
               },
             },
+            {
+              test: cssRegex,
+              exclude: [cssModuleRegex, /node_modules/],
+              use: getStyleLoaders({
+                importLoaders: 1,
+                modules: true,
+                sourceMap: isEnvProduction && shouldUseSourceMap,
+              }),
+            },
             // "postcss" loader applies autoprefixer to our CSS.
             // "css" loader resolves paths in CSS and adds assets as dependencies.
             // "style" loader turns CSS into JS modules that inject <style> tags.
@@ -465,14 +474,14 @@ module.exports = function(webpackEnv) {
                   importLoaders: 2,
                   sourceMap: isEnvProduction && shouldUseSourceMap,
                 },
-                'sass-loader'
+                'sass-loader',
               ),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
               // Remove this when webpack adds a warning or an error for this.
               // See https://github.com/webpack/webpack/issues/6571
               sideEffects: true,
-            },
+            },           
             // Adds support for CSS Modules, but using SASS
             // using the extension .module.scss or .module.sass
             {

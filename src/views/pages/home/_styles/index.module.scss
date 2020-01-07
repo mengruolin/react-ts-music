@@ -1,14 +1,14 @@
+
 $playBtn: 18vw;
 $nextBtn: 14vw;
 $btnColor: none;
-
 ._home {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
   background: #fefefe;
 
-  ._home-btn {
+  ._homeBtn {
     position: relative;
     background: $btnColor;
     color: #c92323;
@@ -17,34 +17,34 @@ $btnColor: none;
       border-style: none !important;
     }
   }
-  ._home-main {
+  ._homeMain {
     height: 70vh;
     width: 100vw;
     padding: 0 5vw 5vh 5vw;
     overflow: hidden;
-    .music-header {
+    .musicHeader {
       width: 100%;
       height: 10vh;
       line-height: 10vh;
     }
-    ._music-title {
+    ._musicTitle {
       width: 60%;
       margin: 0 auto;
       overflow: hidden;
       line-height: 5vh;
-      .scroll-text {
+      .scrollText {
         font-size: 4vw;
         white-space: nowrap;
         display: inline-block;
         animation: 15s wordsLoop linear infinite normal;
       }
     }
-    ._music-cover-box {
+    ._musicCoverBox {
       width: 100%;
       height: 35vh;
       position: relative;
       overflow: hidden;
-      ._music-cover {
+      ._musicCover {
         $width: 45vw;
         position: absolute;
         top: 50%;
@@ -65,7 +65,9 @@ $btnColor: none;
           top: -8%;
           right: -20%;
           z-index: 1;
-          background: 
+          animation: bgRotate 5s linear 0s infinite normal none;
+          // animation: 5s bgRotate normal;
+          background:
           radial-gradient(circle at 50% 0,
             rgba(255,0,0,.5),
             rgba(255,0,0,0) 70.71%),
@@ -84,7 +86,7 @@ $btnColor: none;
         }
       }
     }
-    ._lyric-box {
+    ._lyricBox {
       height: 15vh;
       width: 100%;
       overflow: hidden;
@@ -94,40 +96,40 @@ $btnColor: none;
         justify-content: center;
         text-align: center;
       }
-      .now-lyric {
+      .nowLyric {
         font-size: 5vw;
         height: 10vh;
         font-weight: 500;
         color: #856428b0;
       }
-      .next-lyric {
+      .nextLyric {
         font-size: 4vw;
         height: 5vh;
         color: #6d5b5b;
       }
     }
   }
-  ._handle-box {
+  ._handleBox {
     height: 30vh;
     width: 100%;
     padding: 5vh 5vw;
-    .pro-group {
+    .proGroup {
       height: 5vh;
       width: 80%;
       margin: 0 auto;
       display: flex;
       align-items: center;
-      .progress-box {
+      .progressBox {
         flex: 1;
       }
     }
-    .btn-group {
+    .btnGroup {
       height: 15vh;
       position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
-      .play-btn {
+      .playBtn {
         margin-left: 2vw;
         width: $playBtn;
         height: $playBtn;
@@ -135,14 +137,14 @@ $btnColor: none;
           font-size: 8vw;
         }
       }
-      .prev-btn, .next-btn {
+      .prevBtn, .nextBtn {
         height: $nextBtn;
         width: $nextBtn;
         i {
           font-size: 5vw;
         }
       }
-      .next-btn {
+      .nextBtn {
         margin-left: 2vw;
       }
     }
@@ -155,5 +157,14 @@ $btnColor: none;
   }
   100% {
       transform: translateX(-100%);
+  }
+}
+
+@keyframes bgRotate {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
   }
 }
