@@ -1,4 +1,7 @@
-
+/**
+ * 
+ * @param text 
+*/
 export function parseLyric(text: string) {
   const lyric = text.split('\n');
   let lrc: any = []; 
@@ -26,3 +29,16 @@ export function parseLyric(text: string) {
   
   return lrc;
 }
+
+
+/***
+ *@param time hs 
+*/
+export const getTime = (time: string | number): string => {
+
+  // time = Math.floor() Number(time) * 1000
+  let m, s, ms
+
+  return ''
+}
+

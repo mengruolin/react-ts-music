@@ -127,7 +127,7 @@ function getModules() {
 
   config = config || {};
   const options = config.compilerOptions || {};
-
+  // console.log(getWebpackAliases(options));
   const additionalModulePaths = getAdditionalModulePaths(options);
 
   return {

@@ -1,31 +1,42 @@
 import * as React from 'react'
-import styles from './_styles/index.module.scss'
-import OilLoading from '../../../components/loading/OilLoading'
 
-import { getPlaylistDetail, getLyric } from '../../../api/request'
+import styles from './_styles/index.module.scss'
+import OilLoading from '@/components/loading/OilLoading'
+
+import { getPlaylistDetail, getLyric } from '@/api/request'
 import { Button, Progress } from 'antd-mobile'
-import { parseLyric } from '../../../untils/index'
+import { parseLyric } from '@/untils/index'
+
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+import { decrement, increment } from '@/store/actions'
+import { StoreState } from '@/type/inedx'
 
 type styles = any;
 
+interface IProp {
+  value: number
+  onIncrement: () => void
+  onDecrement: () => void
+}
 interface MusicInfoI {
-  name: string;
-  id: number | string;
-  ar: {name?: string;}[];
-  al: {picUrl?: string;};
+  name: string
+  id: number | string
+  ar: {name?: string}[]
+  al: {picUrl?: string}
 }
 
 interface GdListI {
-  playlist: playlistI;
+  playlist: playlistI
 }
 
 interface playlistI {
-  trackIds?: string;
-  tracks?: MusicInfoI[];
+  trackIds?: string
+  tracks?: MusicInfoI[]
 }
 
 
-const Home: React.SFC = () => {
+const Home: React.SFC<IProp> = (props: IProp) => {
   //const [init] = React.useState<boolean>(true)
   
   // play 按钮状态
@@ -158,13 +169,23 @@ const Home: React.SFC = () => {
   )
 }
 
-export default Home
+const mapStateToProps = (state: StoreState): { value: number } => ({
+  value: state
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onDecrement: () => dispatch(decrement()),
+  onIncrement: () => dispatch(increment())
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
 
 const barStyle = {
   progressBoxStyle: {
     background: '#BDBDBD',
     borderRadius: '2px',
-    overFlow: 'hidden'
+    overFlow: 'hidden',
   },
   progressStyle: {
     borderColor: '#C92323'

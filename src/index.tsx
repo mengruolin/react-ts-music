@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Router from './router/index';
+import Router from '@/router/index';
 
 import { Provider } from 'react-redux'
-import store from './redux/store'
+import store from '@/reducers/index'
 
 import 'antd-mobile/dist/antd-mobile.css';
-import './assets/style/main.scss';
+import '@/assets/style/main.scss';
 
 ReactDOM.render(
   <Provider store={store}>

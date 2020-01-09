@@ -7,7 +7,6 @@ $btnColor: none;
   height: 100vh;
   overflow: hidden;
   background: #fefefe;
-
   ._homeBtn {
     position: relative;
     background: $btnColor;
@@ -36,7 +35,7 @@ $btnColor: none;
         font-size: 4vw;
         white-space: nowrap;
         display: inline-block;
-        animation: 15s wordsLoop linear infinite normal;
+        animation: wordsLoop 15s linear 0s infinite normal none;
       }
     }
     ._musicCoverBox {

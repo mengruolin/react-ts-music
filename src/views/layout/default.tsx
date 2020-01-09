@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import MyHeader from './_parts/header'
-// import MusicBar from '../../components/MusicBar'
+// import MusicBar from '@/components/MusicBar'
 import './_styles/default-layout.scss'
 
 interface Props {

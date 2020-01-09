@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Mp3 from '../plugins/Mp3'
+import Mp3 from '@/plugins/Mp3'
 declare var window: any
 
 export interface Props {
