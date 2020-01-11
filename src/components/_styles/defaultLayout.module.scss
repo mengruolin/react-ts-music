@@ -1,0 +1,30 @@
+._defaultLayout {
+  position: relative;
+  width: 100%;
+  height: auto;
+  ._header {
+    overflow: hidden;
+    width: 100%;
+    height: 8vh;
+    position: absolute;
+    top: 0;
+    z-index: 3;
+    background-color: rebeccapurple;
+  }
+  
+  ._main {
+    box-sizing: border-box;
+    padding: 8vh 0 10vh 0;
+    width: 100%;
+    position: relative;
+  }
+  
+  ._footer {
+    height: 10vh;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    z-index: 3;
+    background-color: darkred;
+  }
+}

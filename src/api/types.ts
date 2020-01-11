@@ -37,3 +37,5 @@ export const Api_lyric: string = '/lyric'  //获取歌词
 export const Api_topSong: string = '/top/song'  //新歌速递
 
 export const Api_likelist: string = '/likelist' //喜欢音乐列表
+
+export const Api_personalized: string = '/personalized' //推荐歌单

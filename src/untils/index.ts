@@ -32,13 +32,46 @@ export function parseLyric(text: string) {
 
 
 /***
- *@param time hs 
+ *@param time s
 */
-export const getTime = (time: string | number): string => {
+export const adjustTime = (time: string | number): string => {
 
-  // time = Math.floor() Number(time) * 1000
-  let m, s, ms
+  time = Math.floor(Number(time))
+  let m, s
 
-  return ''
+  m = adjustTimeType(Math.floor(time / 60))
+  s = adjustTimeType(Math.floor(time % 60))
+
+  return `${m}:${s}`
 }
 
+const adjustTimeType = (m: number | string) => {
+  switch (String(m).length) {
+    case 0:
+      m = '00'
+      break
+    case 1:
+      m = '0' + m
+      break
+    default:
+      m = m + ''
+  }
+
+  return m
+}
+
+export const getCNParseInt = (count: string | number): string => {
+  const intCount = parseInt(String(count))
+  const strCount = intCount.toString()
+
+  if(strCount.length < 4) {
+    count = intCount + ''
+    return count
+  } else if(strCount.length < 9) {
+    count = (intCount / 10000).toFixed(2) + '万'
+    return count
+  } else {
+    count = (intCount / 100000000).toFixed(2) + '亿'
+    return count
+  }
+}

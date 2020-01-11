@@ -1,3 +1,5 @@
+import { IGetMusicInfo } from "./types/info"
+
 export interface playListI {
   name: string
   tracks: string
@@ -44,7 +46,7 @@ export default class Mp3 {
   /**
    * 
    */
-  public get getMusicInfo(): {} {
+  public get getMusicInfo(): IGetMusicInfo {
     let duration, index, currentTime
 
     duration = this.player.duration
@@ -76,7 +78,7 @@ export default class Mp3 {
       this.keepPlay && this.player.play()
 
       this.readlyEventCallback.forEach((fn: any) => {
-        fn(this.inMusic)
+        fn(this.getMusicInfo)
       })
     })
 

@@ -1,0 +1,82 @@
+$listBgColor: #ffff;
+
+.songMenu {
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  width: 100vw;
+  min-height: 100vh;
+  padding-bottom: 10vh;
+  background-color: #fefefe;
+  .cover {
+    height: 30vh;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: auto;
+    }
+    .goBack {
+      position: absolute;
+      top: 2vh;
+      left: 2vw;
+      color: azure;
+    }
+  }
+  .main {
+    width: 100vw;
+    position: relative;
+    padding: 0 4vw;
+    top: 2vh;
+    .musicList {
+      border: solid 1px rgb(49, 48, 47);
+      border-radius: 2em;
+      width: 100%;
+      // height: 200px;
+      overflow: hidden;
+      .btnGroup {
+        display: flex;
+        width: 100%;
+        height: 7vh;
+        background-color: rgb(63, 58, 57);
+        .playAll {
+          flex: 1;
+          line-height: 8vh;
+          height: 8vh;
+          align-self: center;
+          border-radius: 0;
+          border-top-right-radius: 20px;
+          font-size: 4.5vw;
+          color: rgb(0, 0, 0);
+          text-align: center;
+          background: $listBgColor;
+          &::before {
+            border-style: none !important;
+          }
+          i {
+            position: relative;
+            top: 0.3vh;
+            margin-right: 2vw;
+            font-size: 6vw;
+          }
+        }
+        .otherHander {
+          flex: 1;
+        }
+      }
+      .listGroup {
+        width: 100%;
+        min-height: 10vh;
+        background-color: $listBgColor;
+        .musicName {
+          font-size: 5vw;
+        }
+        .musicAuto {
+          font-size: 4vw;
+          color: silver;
+        }
+      }
+    }
+  }
+}

@@ -7,6 +7,8 @@ $btnColor: none;
   height: 100vh;
   overflow: hidden;
   background: #fefefe;
+  position: absolute;
+  z-index: 4;
   ._homeBtn {
     position: relative;
     background: $btnColor;
@@ -53,7 +55,6 @@ $btnColor: none;
         height: $width;
         box-shadow: 5px 2px 15px #4e4b4b;
         border-radius: 2%;
-        z-index: 3;
         &::after {
           content: "";
           display: block;
@@ -118,6 +119,9 @@ $btnColor: none;
       margin: 0 auto;
       display: flex;
       align-items: center;
+      .layricTime {
+        font-size: 1vw;
+      }
       .progressBox {
         flex: 1;
       }
@@ -129,7 +133,6 @@ $btnColor: none;
       justify-content: center;
       align-items: center;
       .playBtn {
-        margin-left: 2vw;
         width: $playBtn;
         height: $playBtn;
         i {
@@ -142,9 +145,6 @@ $btnColor: none;
         i {
           font-size: 5vw;
         }
-      }
-      .nextBtn {
-        margin-left: 2vw;
       }
     }
   }

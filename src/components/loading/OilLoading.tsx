@@ -1,17 +1,21 @@
 import * as React from 'react';
 import './_styles/OilLoading.scss'
 
+import { connect } from 'react-redux'
+import { IStates } from '@/type/inedx';
+import { Dispatch } from 'redux';
+import { decrement } from '@/store/actions';
+
 interface Props {
-  show: boolean;
+  onDecrement: () => void
+  showLoading: boolean
 }
 
 const OilLoading: React.SFC<Props> = (props: Props) => {
   
-  //console.log(props.show);
-  
   return(
     <>
-      {props.show ? (
+      {props.showLoading ? (
         <div className="_loading-swiper">
           <div className="_OilLoading"/>
         </div>
@@ -22,4 +26,14 @@ const OilLoading: React.SFC<Props> = (props: Props) => {
   )
 }
 
-export default OilLoading
+const mapStateToProps = (state: IStates) => {
+  return {
+    showLoading: state.loadingGroup.globalLoaing
+  }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onDecrement: () => dispatch(decrement())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(OilLoading)
