@@ -26,7 +26,6 @@ const SongMenu: React.SFC = () => {
   })
 
   React.useEffect(() => {
-    //console.log(location.state.id);
     mounted(location.state.id)
   }, [location.state.id])
 

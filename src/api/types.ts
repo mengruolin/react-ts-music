@@ -39,3 +39,7 @@ export const Api_topSong: string = '/top/song'  //新歌速递
 export const Api_likelist: string = '/likelist' //喜欢音乐列表
 
 export const Api_personalized: string = '/personalized' //推荐歌单
+
+export const Api_personalizedNewsong: string = '/personalized/newsong'  //推荐歌曲
+
+export  const Api_personalizedPrivatecontent: string = '/personalized/privatecontent' //独家放送

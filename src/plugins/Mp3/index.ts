@@ -1,4 +1,4 @@
-import { IGetMusicInfo } from "./types/info"
+import { IGetMusicInfo, IRemoveListenType } from "./types/info"
 
 export interface playListI {
   name: string
@@ -42,6 +42,10 @@ export default class Mp3 {
   public get indexNum(): number {
     return this.inMusic
   }
+
+  public get paused(): boolean {
+    return this.player.paused
+  } 
 
   /**
    * 
@@ -202,21 +206,46 @@ export default class Mp3 {
   //
   //  Event
 
-  public on(type: string, callback: Function): void {
+  public on(type: string, callback: Function): IRemoveListenType {
+    let cbData
     switch (type) {
       case 'readly':
-        this.addReadlyEvent(callback)
+        cbData = this.addReadlyEvent(callback)
         break
       case 'timeupdate':
-        this.addTimeupdateEvent(callback)
+        cbData = this.addTimeupdateEvent(callback)
+    }
+
+    return cbData as IRemoveListenType
+  }
+
+  public remove(eventInfo: IRemoveListenType): void {
+    switch (eventInfo.type) {
+      case 'readly':
+        //cbData = this.addReadlyEvent(callback)
+        this.readlyEventCallback.splice(eventInfo.index, 1)
+        break
+      case 'timeupdate':
+        //cbData = this.addTimeupdateEvent(callback)
+        this.timeUpdataEventCallback.splice(eventInfo.index, 1)
+        break
     }
   }
   
-  private addReadlyEvent(fn: Function): void {
+  private addReadlyEvent(fn: Function): IRemoveListenType {
+    
     this.readlyEventCallback.push(fn)
+    return {
+      type: 'readly',
+      index: this.readlyEventCallback.length - 1
+    }
   }
 
-  public addTimeupdateEvent(fn: Function): void {
+  public addTimeupdateEvent(fn: Function): IRemoveListenType {
     this.timeUpdataEventCallback.push(fn)
+    return {
+      type: 'timeupdate',
+      index: this.timeUpdataEventCallback.length - 1
+    }
   }
 }

@@ -8,6 +8,7 @@ import { IGetMusicInfo } from '@/plugins/Mp3/types/info'
 import { parseLyric, adjustTime } from '@/untils/index'
 import { getLyric } from '@/api/request'
 import { useHistory } from 'react-router-dom'
+import { Button } from 'antd-mobile'
 
 interface IProps {
   GlobalPlayList: any
@@ -26,60 +27,53 @@ const MusicBar: React.SFC<IProps> = (props) => {
 
   // play 按钮状态
   const [play, setPlay] = React.useState(false)
-
   const [lyric, setLyric] = React.useState<[number, string][]>([[0, '暂无歌词！']]) // 歌词组
   const [indexLyric, setIndexLyric] = React.useState<any>(0)  //歌词当前句
   const [precent, setPrecent] = React.useState<any>(0)
-  const [currTime, setCurrTime ] = React.useState<string>('00:00')
+  const [currTime, setCurrTime ] = React.useState<number>(0)
   const [lyricTime, setlyricTime ] = React.useState<string>('00:00')
+  
+  const [playList, setPlayList] = React.useState({})
 
   React.useEffect(() => {
-    const gdList = props.GlobalPlayList
-    
-    if (gdList.playlist) {
-      let lyric: any
-      let count = 0
-      let ln = 0
-
-      // ;(window as any).player.init({}, gdList.playlist.trackIds)
-      ;(window as any).player.on('readly', (async (musicInfo: IGetMusicInfo) => {
-          
-      ;(gdList.playlist.tracks as any)[musicInfo.index] && setMusicInfo((gdList.playlist.tracks as any)[musicInfo.index])
-
-        setlyricTime(() => adjustTime(musicInfo.duration))
-
-        const res = await getLyric({id: (gdList.playlist.tracks as any)[musicInfo.index].id})
-        
-        if (!res.lrc) {
-          setIndexLyric(0)
-        } else {
-          lyric = parseLyric(res.lrc.lyric)
-          ln = lyric.length
-
-          setLyric(lyric)
-          setIndexLyric(0)
-        }
-
-        count = 0
-      }))
-
-      ;(window as any).player.on('timeupdate', ((musicInfo: any) => {
-        
-        setPrecent(() => {
-          return musicInfo.currentTime / musicInfo.duration * 100
-        })
-
-        setCurrTime(() => adjustTime(musicInfo.currentTime))
-        
-
-        if (count < ln - 1 && lyric && musicInfo.currentTime * 1000 >= lyric[count+1][0]) {
-          count++
-          setIndexLyric(count)
-        }
-
-      }))
-    }
+    props.GlobalPlayList.playlist && setPlayList(props.GlobalPlayList.playlist.tracks)
   }, [props.GlobalPlayList])
+
+  React.useEffect(() => {
+    if (playList[0]) {
+      const onReadly = window.player.on('readly', musicReady)
+      const onUpdata = window.player.on('timeupdate', musicUpdata)
+
+      return () => {
+        window.player.remove(onReadly)
+        window.player.remove(onUpdata)
+      }
+    }
+  }, [playList])
+
+  React.useEffect(() => {
+    if (indexLyric < lyric.length - 1 && currTime * 1000 >= lyric[indexLyric+1][0]) {
+      setIndexLyric(indexLyric + 1)
+    }
+  }, [currTime, indexLyric, lyric])
+
+  const musicReady = async (info: IGetMusicInfo) => {
+    setMusicInfo(playList[info.index])
+    setlyricTime(() => adjustTime(info.duration))
+    setIndexLyric(0)
+    
+    const res = await getLyric({id: playList[info.index].id})
+    
+    res.lrc && setLyric(() => parseLyric(res.lrc.lyric))
+  }
+
+  const musicUpdata = (info: IGetMusicInfo) => {
+    setPrecent(() => (info.currentTime / info.duration * 100))
+    setCurrTime(info.currentTime)
+    setPlay(() => {
+      return window.player.paused ? false : true
+    })
+  }
 
   const handlePlayBtn = (): void => {
     !play ? (window as any).player.play() : (window as any).player.pause()
@@ -90,10 +84,15 @@ const MusicBar: React.SFC<IProps> = (props) => {
     <div className={styles._musicBar}>
       <div className={styles.playerCover}>
         <img src={`${musicInfo.al.picUrl}?param=80y80`} alt="" className={play? `${styles.coverRotate}` : ''} />
-        <i className={`${styles.playBtn} icon-font`} onClick={handlePlayBtn}>{ !play ? <>&#xe6a4;</> : <>&#xe63a;</>}</i>
       </div>
-      <div onClick={() => history.push('/player')}>
-        这是歌词！！！！！！！
+      <div className={styles.lyricBox} onClick={() => history.push('/player', {musicInfo, lyric, lyricTime})}>
+        <span>{lyric[indexLyric][1]}</span>
+      </div>
+      <div className={styles.btnGroup}>
+        <Button className={`${styles.allBtn} ${styles.playBtn}`} onClick={handlePlayBtn}>
+          <i className="icon-font">{ !play ? <>&#xe7ab;</> : <>&#xe663;</>}</i></Button>
+        <Button className={`${styles.allBtn} c-ml20`} onClick={handlePlayBtn}>
+          <i className="icon-font">&#xe6bf;</i></Button>
       </div>
     </div>
   )

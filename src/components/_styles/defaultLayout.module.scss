@@ -25,6 +25,7 @@
     position: fixed;
     bottom: 0;
     z-index: 3;
-    background-color: darkred;
+    background: linear-gradient(to right, #00b09b, #96c93d);
+    box-shadow: 0px -1px 8px #00b09b;
   }
 }

@@ -8,6 +8,7 @@ $btnColor: none;
   overflow: hidden;
   background: #fefefe;
   position: absolute;
+  top: 0;
   z-index: 4;
   ._homeBtn {
     position: relative;
@@ -120,7 +121,7 @@ $btnColor: none;
       display: flex;
       align-items: center;
       .layricTime {
-        font-size: 1vw;
+        font-size: 3vw;
       }
       .progressBox {
         flex: 1;

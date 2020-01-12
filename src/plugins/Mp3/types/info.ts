@@ -3,3 +3,8 @@ export interface IGetMusicInfo {
   currentTime:  number
   index:  number
 }
+
+export interface IRemoveListenType {
+  type: string
+  index: number
+}
