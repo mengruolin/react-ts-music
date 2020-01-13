@@ -8,43 +8,26 @@ interface IProps {
 
 const Caruse: React.SFC<IProps> = (props: IProps) => {
 
-  const [curr, setCurr] = React.useState<number>(0)
-
-  const afterChange = (curr: number): void => {
-    
-  }
-
-  const beforeChange = (from: number, to: number): void => {
-    setCurr(to)
-  }
-
   return(
     <>
       <Carousel
-          autoplay
-          infinite
-          beforeChange={beforeChange}
-          afterChange={afterChange}
-          style={{height: '100%', overflow: 'hidden', borderRadius: '4vw' }}
-          dots={false}
-        >
-          {props.caruseInfo.map((item: any, key: number) => (
-            <a
+        autoplay
+        infinite
+        dots={false}
+        style={{overflow: 'hidden', borderRadius: '2vw'}}>
+        {props.caruseInfo.map((item: any, key: number) => (
+          <a
             key={key}
-            href={item.url === '' ? '/' : item.url}
-            style={{
-              display: 'block',
-              position: 'relative',
-              boxShadow: '2px 1px 1px rgba(0, 0, 0, 0.2)',
-            }}>
-              <img
-                src={`${item.picUrl}?600y400`}
-                alt=""
-                style={{ width: '100%',height: '30vh', verticalAlign: 'top'}}
-              />
-            </a>
-          ))}
-        </Carousel>
+            href='https://github.com/mengruolin/react-ts-music'
+            style={{ display: 'inline-block', width: '100%', height: '25vh', touchAction: 'pan-y'}}>
+            <img
+              alt=""
+              style={{ width: '100%',height: '26vh', verticalAlign: 'top'}}
+              src={`${item.pic}?600y240`}
+            />
+          </a>
+        ))}
+      </Carousel>
     </>
   )
 }

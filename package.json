@@ -96,7 +96,7 @@
     ]
   },
   "devDependencies": {
-    "@svgr/webpack": "^4.3.3",
+    "@svgr/webpack": "^5.0.1",
     "babel-plugin-import": "^1.13.0"
   },
   "jest": {

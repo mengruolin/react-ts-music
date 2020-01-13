@@ -7,6 +7,7 @@ import {
   Api_personalized,
   Api_personalizedNewsong,
   Api_personalizedPrivatecontent,
+  Api_banner,
 } from './types'
 
 export const createRequest = (methods: string, api: string) => {
@@ -29,3 +30,5 @@ export const getPersonalized = createRequest('get', Api_personalized)
 export const getPersonalizedNewsong = createRequest('get', Api_personalizedNewsong)
 
 export const getPersonalizedPrivatecontent = createRequest('get', Api_personalizedPrivatecontent)
+
+export const getBanner = createRequest('get', Api_banner)

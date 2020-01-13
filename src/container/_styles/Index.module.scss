@@ -16,9 +16,14 @@
 ._item {
   height: 10vh;
   width: 100%;
-  position: sticky;
-  top: 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
   // background-color: rebeccapurple;
+  .svgIcon {
+    flex: 1;
+    padding: 1vh 1vh;
+  }
 }
 
 .lsitTitle {

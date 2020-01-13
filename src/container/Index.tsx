@@ -4,10 +4,14 @@ import { connect } from 'react-redux'
 import styles from './_styles/Index.module.scss'
 import Caruse from '@/components/Caruse'
 import { Toast, List } from 'antd-mobile'
-import { getPersonalized, getPersonalizedNewsong, getPersonalizedPrivatecontent } from '@/api/request'
+import { getPersonalized, getPersonalizedNewsong, getBanner } from '@/api/request'
 import { useHistory } from 'react-router-dom'
 import { getCNParseInt } from '@/untils'
-// import IconReact from '@/assets/svg/item-like.svg'
+import SvgItemLike from '@/assets/svg/item-like.svg'
+import SvgSongFm from '@/assets/svg/song-fm.svg'
+import SvgSongList from '@/assets/svg/song-list.svg'
+import SvgHotComment from '@/assets/svg/hot-comment.svg'
+import SvgSingerList from '@/assets/svg/singer-list.svg'
 
 interface IProps {
 
@@ -33,9 +37,9 @@ const Index: React.SFC<IProps> = (props: IProps) => {
 
   const resetEf = async () => {
 
-    let caruseData = await getPersonalizedPrivatecontent()
-    if(caruseData.code === 200) {
-      setCaruseData(caruseData.result)
+    let caruse = await getBanner({type: 2})
+    if(caruse.code === 200) {
+      setCaruseData(() => caruse.banners)
     } else {
       Toast.fail('获取独家放送失败!')
     }
@@ -66,10 +70,24 @@ const Index: React.SFC<IProps> = (props: IProps) => {
   return(
     <div className={styles._Index}>
       <div className={styles._caruse}>
-        <Caruse caruseInfo={caruseData}/>
+        { caruseData.length > 0 ? <Caruse caruseInfo={caruseData}/> : ''}
       </div>
       <div className={styles._item}>
-        {/* <IconReact /> */}
+        <div className={styles.svgIcon}>
+          <SvgItemLike width={'100%'} height={'100%'} />
+        </div>
+        <div className={styles.svgIcon}>
+          <SvgSongList width={'100%'} height={'100%'} />
+        </div>
+        <div className={styles.svgIcon}>
+          <SvgSingerList width={'100%'} height={'100%'} />
+        </div>
+        <div className={styles.svgIcon}>
+          <SvgSongFm width={'100%'} height={'100%'} />
+        </div>
+        <div className={styles.svgIcon}>
+          <SvgHotComment width={'100%'} height={'100%'} />
+        </div>
       </div>
       <div className={styles.lsitTitle}>
         <span className={styles.title}><i className="icon-font c-mr20">&#xe605;</i>推荐歌单</span>

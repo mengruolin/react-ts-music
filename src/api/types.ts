@@ -43,3 +43,5 @@ export const Api_personalized: string = '/personalized' //推荐歌单
 export const Api_personalizedNewsong: string = '/personalized/newsong'  //推荐歌曲
 
 export  const Api_personalizedPrivatecontent: string = '/personalized/privatecontent' //独家放送
+
+export const Api_banner: string = '/banner'   //轮播图

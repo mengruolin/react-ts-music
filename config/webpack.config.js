@@ -327,13 +327,6 @@ module.exports = function(webpackEnv) {
       rules: [
         // Disable require.ensure as it's not a standard language feature.
         { parser: { requireEnsure: false } },
-        //svg loader
-        // {
-        //   test: /\.svg$/,
-        //   use: ['@svgr/webpack', 'url-loader'],
-        // },
-        // First, run the linter.
-        // It's important to do this before Babel processes the JS.
         {
           test: /\.(js|mjs|jsx|ts|tsx)$/,
           enforce: 'pre',
@@ -366,6 +359,12 @@ module.exports = function(webpackEnv) {
                 limit: imageInlineSizeLimit,
                 name: 'static/media/[name].[hash:8].[ext]',
               },
+            },
+            //  use Import SVG in TypeScript React app with Webpack
+            //https://github.com/gregberge/svgr/tree/master/packages/webpack
+            {
+              test: /\.svg$/,
+              use: ['@svgr/webpack'],
             },
             // Process application JS with Babel.
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
