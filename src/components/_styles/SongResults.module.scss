@@ -1,0 +1,55 @@
+._songResult {
+  position: absolute;
+  width: 100vw;
+  top: 0;
+  z-index: 30;
+  background-color: rgb(255, 255, 255);
+  .goBack {
+    width: 100%;
+    line-height: 10vh;
+    padding: 0 2vw;
+    position: fixed;
+    background: rgba(151, 84, 84, 0.9);
+    color: #ffffff;
+    font-size: 4vw;
+    z-index: 33;
+    top: 0;
+  }
+  .scroll{
+    position: relative;
+    top: 10vh;
+    height: 90vh;
+    width: 100%;
+    overflow: hidden;
+    background: antiquewhite;
+    ._main {
+      ._list {
+        height: 30vh;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        padding: 2vh 2vw;
+        .imgCover {
+          width: 26vh;
+          height: 26vh;
+          overflow: hidden;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .songList {
+          flex: 1;
+          height: 26vh;
+          padding: 0 4vw;
+          .songItems {
+            height: 33%;
+            line-height: 9vh;
+            width: 100%;
+            overflow: hidden;
+          }
+        }
+      }
+    }
+  }
+}

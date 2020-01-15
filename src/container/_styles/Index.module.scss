@@ -112,3 +112,17 @@
     color: silver;
   }
 }
+
+.recommendedMv {
+  overflow: hidden;
+  .itemMv {
+    width: 50%;
+    height: 20vh;
+    float: left;
+    padding: 2vh 2vw;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

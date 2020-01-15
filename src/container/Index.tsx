@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import styles from './_styles/Index.module.scss'
 import Caruse from '@/components/Caruse'
 import { Toast, List } from 'antd-mobile'
-import { getPersonalized, getPersonalizedNewsong, getBanner } from '@/api/request'
+import { getPersonalized, getPersonalizedNewsong, getBanner, getPersonalizedMv } from '@/api/request'
 import { useHistory } from 'react-router-dom'
 import { getCNParseInt } from '@/untils'
 import SvgItemLike from '@/assets/svg/item-like.svg'
@@ -29,6 +29,8 @@ const Index: React.SFC<IProps> = (props: IProps) => {
   const [recommendPlaylist, setRecommendPlaylist] = React.useState<[]>([])
   const [recommendedSong, setRecommendedSong] = React.useState<[]>([])
   const [caruseData, setCaruseData] = React.useState<[]>([])
+  const [personalizedMv, setPersonalizedMv] = React.useState<[]>([])
+
   const history = useHistory()
 
   React.useEffect(() => {
@@ -58,6 +60,14 @@ const Index: React.SFC<IProps> = (props: IProps) => {
     } else {
       Toast.fail('获取推荐歌曲失败!')
     }
+
+    let Mv = await getPersonalizedMv()
+
+    if(Mv.code === 200) {
+      setPersonalizedMv(Mv.result)
+    } else {
+      Toast.fail('获取推荐Mv失败!')
+    }
   }
 
   const showDetail = (id: string): any => {
@@ -79,7 +89,7 @@ const Index: React.SFC<IProps> = (props: IProps) => {
         <div className={styles.svgIcon}>
           <SvgSongList width={'100%'} height={'100%'} />
         </div>
-        <div className={styles.svgIcon}>
+        <div className={styles.svgIcon} onClick={() => history.push('/songResult')}>
           <SvgSingerList width={'100%'} height={'100%'} />
         </div>
         <div className={styles.svgIcon}>
@@ -122,9 +132,23 @@ const Index: React.SFC<IProps> = (props: IProps) => {
         </List>
       </div>
       <div className={styles.lsitTitle}>
-        <span className={styles.title}><i className="icon-font c-mr20">&#xe6be;</i>推荐MV</span>
+        <span className={styles.title}><i className="icon-font c-mr20">&#xe6be;</i>推荐Mv</span>
         <span className={styles.more}>更多</span>
       </div>
+      <div className={styles.recommendedMv}>
+        { personalizedMv.map((item: any, key: number) => (
+          <div className={styles.itemMv}>
+            <img src={`${item.picUrl}?600y300`} alt={item.name} />
+            <span>{item.name}&nbsp;-&nbsp;{item.artistName}</span>
+          </div>
+        ))}
+        
+      </div>
+      <div className={styles.lsitTitle}>
+        <span className={styles.title}><i className="icon-font c-mr20">&#xe6be;</i>推荐电台</span>
+        <span className={styles.more}>更多</span>
+      </div>
+
     </div>
   )
 }

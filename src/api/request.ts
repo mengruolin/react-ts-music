@@ -8,6 +8,8 @@ import {
   Api_personalizedNewsong,
   Api_personalizedPrivatecontent,
   Api_banner,
+  Api_personalizedMv,
+  Api_toplistDetail,
 } from './types'
 
 export const createRequest = (methods: string, api: string) => {
@@ -31,4 +33,8 @@ export const getPersonalizedNewsong = createRequest('get', Api_personalizedNewso
 
 export const getPersonalizedPrivatecontent = createRequest('get', Api_personalizedPrivatecontent)
 
-export const getBanner = createRequest('get', Api_banner)
+export const getBanner = createRequest('get', Api_banner) //轮播图
+
+export const getPersonalizedMv = createRequest('get',  Api_personalizedMv)  //推荐,MV
+
+export const getToplistDetail = createRequest('get', Api_toplistDetail) //所有榜单内容摘要

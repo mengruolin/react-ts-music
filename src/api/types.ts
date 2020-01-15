@@ -42,6 +42,11 @@ export const Api_personalized: string = '/personalized' //推荐歌单
 
 export const Api_personalizedNewsong: string = '/personalized/newsong'  //推荐歌曲
 
+export const Api_personalizedMv: string = '/personalized/mv'  //推荐MV
+
 export  const Api_personalizedPrivatecontent: string = '/personalized/privatecontent' //独家放送
 
 export const Api_banner: string = '/banner'   //轮播图
+
+export const Api_toplistDetail: string = '/toplist/detail'  //所有榜单内容摘要
+
