@@ -26,13 +26,20 @@ const SongResults: React.SFC<IProps> = (props) => {
       Toast.fail('获取榜单失败！')
     }
   }
+
+  const betScrollData = () => {
+    return {
+      pullEvent: true,
+
+    }
+  }
   return(
     <div className={styles._songResult}>
       <div className={styles.goBack}>
         <i className="icon-font" onClick={() => history.go(-1)}>&#xe716;</i>
       </div>
       <div className={styles.scroll}>
-        <BetScroll>
+        <BetScroll {...betScrollData()}>
           <div className={styles._main}>
           {toplistDetail.map((item: any, key: number) => (
             <div key={key} className={styles._list}>

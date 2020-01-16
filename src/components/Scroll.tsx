@@ -1,57 +1,43 @@
 import * as React from 'react'
-import BScroll from 'better-scroll'
+import BScroll, { BsOption } from 'better-scroll'
 
 import styles from './_styles/Scroll.module.scss'
+import SvgScrollLoading from '@/assets/svg/scroll-loading.svg'
 
 interface IProps {
   children: any;
-  startX?: number;
-  startY?: number;
-  scrollX?: boolean;
-  scrollY?: boolean;
-  freeScroll?: boolean;
-  directionLockThreshold?: number;
-  eventPassthrough?: string | boolean;
-  click?: boolean;
-  // dblclick: boolean | DoubleClick;
-  tap?: boolean;
-  bounce?: boolean;
-  bounceTime?: number;
-  momentum?: boolean;
-  momentumLimitTime?: number;
-  momentumLimitDistance?: number;
-  swipeTime?: number;
-  swipeBounceTime?: number;
-  deceleration?: number;
-  flickLimitTime?: number;
-  flickLimitDistance?: number;
-  resizePolling?: number;
-  probeType?: number;
-  preventDefault?: boolean;
-  preventDefaultException?: object;
-  HWCompositing?: boolean;
-  useTransition?: boolean;
-  useTransform?: boolean;
-  bindToWrapper?: boolean;
-  disableMouse?: boolean;
-  disableTouch?: boolean;
-  // observeDOM?: boolean;
-  // autoBlur?: boolean;
-  // stopPropagation?: boolean;
+  pullEvent: boolean;
 }
 const BetScroll: React.SFC<IProps> = (props) => {
 
   const scrollContainerRef = React.useRef(null)
+  const [initScroll, setInitScroll] = React.useState<Boolean>(false)
+  const [isPullDown, setIsPullDown] = React.useState<Boolean>(false)
+
   React.useEffect(() => {
-    const scroll = new BScroll((scrollContainerRef.current as any), {
-      pullDownRefresh: true,
+    if(initScroll) return;
+    
+    const GScroll = new BScroll((scrollContainerRef.current as any), {
+      pullDownRefresh: {
+        threshold: 150,
+        stop: 30
+      },
       scrollY: true
+    } as BsOption)
+
+    GScroll.on('pullingDown', () => {
+      
     })
-  }, [])
+  }, [initScroll])
   
   return(
     <div ref={scrollContainerRef} className={styles._swiper}>
-      {props.children}
+      <div className={styles._main}>
+        {props.children}
+      </div>
+      <div className={styles._headerLoading}>
+        <SvgScrollLoading width={'100%'}  height={'100%'} />
+      </div>
     </div>
   )
 }

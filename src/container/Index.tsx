@@ -137,7 +137,7 @@ const Index: React.SFC<IProps> = (props: IProps) => {
       </div>
       <div className={styles.recommendedMv}>
         { personalizedMv.map((item: any, key: number) => (
-          <div className={styles.itemMv}>
+          <div className={styles.itemMv} key={key}>
             <img src={`${item.picUrl}?600y300`} alt={item.name} />
             <span>{item.name}&nbsp;-&nbsp;{item.artistName}</span>
           </div>
