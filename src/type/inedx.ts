@@ -1,20 +1,5 @@
-export type StoreState = number
+import { IGlobalReducerStates } from "./globalReducerState";
 
-export interface IStates {
-  count: number
-  loadingGroup: ILoadingGroup
-  playList: any
+export interface globalStates {
+  globalReducer: IGlobalReducerStates;
 }
-
-export interface ILoadingGroup {
-  globalLoaing: boolean
-}
-
-export const initState: IStates = {
-  count: 0,
-  loadingGroup: {
-    globalLoaing: false
-  },
-  playList: {}
-}
-

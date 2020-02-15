@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Mp3 from '@/plugins/Mp3'
 import { connect } from 'react-redux';
 // import { Dispatch, bindActionCreators } from 'redux';
-import { IStates } from '@/type/inedx';
+import { globalStates } from '@/type/inedx';
 import { getMusicListAction } from '@/store/actions';
 declare var window: any
 
@@ -36,8 +36,8 @@ const InitPlayer: React.SFC<IProps> = (props) => {
   )
 }
 
-const mapStateToProps = (state: IStates): { GlobalPlayList: any } => ({
-  GlobalPlayList: state.playList
+const mapStateToProps = (state: globalStates): { GlobalPlayList: any } => ({
+  GlobalPlayList: state.globalReducer.playList
 })
 
 const mapDispatchToProps = (dispatch: any) => ({

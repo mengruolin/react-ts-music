@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 
 import styles from './_styles/MusicBar.module.scss'
-import { IStates } from '@/type/inedx'
+import { globalStates } from '@/type/inedx'
 import { MusicInfoI } from './PlayMusic'
 import { IGetMusicInfo } from '@/plugins/Mp3/types/info'
 import { parseLyric, adjustTime } from '@/untils/index'
@@ -29,7 +29,6 @@ const MusicBar: React.SFC<IProps> = (props) => {
   const [play, setPlay] = React.useState(false)
   const [lyric, setLyric] = React.useState<[number, string][]>([[0, '暂无歌词！']]) // 歌词组
   const [indexLyric, setIndexLyric] = React.useState<any>(0)  //歌词当前句
-  const [precent, setPrecent] = React.useState<any>(0)
   const [currTime, setCurrTime ] = React.useState<number>(0)
   const [lyricTime, setlyricTime ] = React.useState<string>('00:00')
   
@@ -68,7 +67,6 @@ const MusicBar: React.SFC<IProps> = (props) => {
   }
 
   const musicUpdata = (info: IGetMusicInfo) => {
-    setPrecent(() => (info.currentTime / info.duration * 100))
     setCurrTime(info.currentTime)
     setPlay(() => {
       return window.player.paused ? false : true
@@ -98,8 +96,8 @@ const MusicBar: React.SFC<IProps> = (props) => {
   )
 }
 
-const mapStateToProps = (state: IStates): { GlobalPlayList: any } => ({
-  GlobalPlayList: state.playList
+const mapStateToProps = (state: globalStates): { GlobalPlayList: any } => ({
+  GlobalPlayList: state.globalReducer.playList
 })
 
 export default connect(mapStateToProps)(MusicBar)

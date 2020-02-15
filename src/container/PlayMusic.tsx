@@ -9,7 +9,7 @@ import { parseLyric, adjustTime } from '@/untils/index'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { setLoading } from '@/store/actions'
-import { IStates } from '@/type/inedx'
+import { globalStates } from '@/type/inedx'
 import { IGetMusicInfo } from '@/plugins/Mp3/types/info'
 import { useHistory, useLocation } from 'react-router-dom'
 
@@ -172,8 +172,8 @@ const Home: React.SFC<IProp> = (props: IProp) => {
   )
 }
 
-const mapStateToProps = (state: IStates): { GlobalPlayList: any } => ({
-  GlobalPlayList: state.playList
+const mapStateToProps = (state: globalStates): { GlobalPlayList: any } => ({
+  GlobalPlayList: state.globalReducer.playList
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

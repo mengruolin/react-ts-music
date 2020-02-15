@@ -2,12 +2,10 @@ import * as React from 'react';
 import './_styles/OilLoading.scss'
 
 import { connect } from 'react-redux'
-import { IStates } from '@/type/inedx';
+import { globalStates } from '@/type/inedx';
 import { Dispatch } from 'redux';
-import { decrement } from '@/store/actions';
 
 interface Props {
-  onDecrement: () => void
   showLoading: boolean
 }
 
@@ -26,14 +24,12 @@ const OilLoading: React.SFC<Props> = (props: Props) => {
   )
 }
 
-const mapStateToProps = (state: IStates) => {
+const mapStateToProps = (state: globalStates) => {
   return {
-    showLoading: state.loadingGroup.globalLoaing
+    showLoading: state.globalReducer.loadingGroup.globalLoaing
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onDecrement: () => dispatch(decrement())
-})
+const mapDispatchToProps = (dispatch: Dispatch) => ({})
 
 export default connect(mapStateToProps, mapDispatchToProps)(OilLoading)
