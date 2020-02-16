@@ -55,7 +55,7 @@ const SongMenu: React.SFC = () => {
               { songMenu.playlist.tracks.map((item: any, key: number) => (
                   <Item extra={(<i className="icon-font">&#xe701;</i>)} key={key} style={{height: '8vh'}}>
                     <span className={styles.musicName}>{item.name}</span>
-                    <span className={styles.musicAuto}>-{item.ar[0].name}</span></Item>)
+                    <span className={styles.musicAuto}>{`\t-\t${item.ar[0].name}`}</span></Item>)
                 )}
             </List>
           </div>

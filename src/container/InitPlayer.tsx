@@ -23,11 +23,12 @@ const InitPlayer: React.SFC<IProps> = (props) => {
     
     props.onGetPlayList('524176061')
 
+    
   }, [])
 
   useEffect(() => {
-   props.GlobalPlayList.playlist && (window as any).player.init({},  props.GlobalPlayList.playlist.trackIds) 
-  }, [props.GlobalPlayList.playlist])
+    props.GlobalPlayList[0] && window.player.init({},  props.GlobalPlayList)
+  }, [props.GlobalPlayList])
 
   return (
     <>

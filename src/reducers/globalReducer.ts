@@ -1,5 +1,5 @@
-import { ModifyAction } from '@/store/actions'
-import { SETLOADING, SETPLAYLIST } from '@/store/const'
+import { ModifyAction, } from '@/store/actions'
+import { SETLOADING, SETPLAYLIST, SET_PLAY_LYRIC, SET_PLAY_MUSIC } from '@/store/const'
 import { IGlobalReducerStates, initState } from '@/type/globalReducerState'
 import produce from 'immer'
 
@@ -11,6 +11,12 @@ const globalReducer = (state: IGlobalReducerStates = initState, action: ModifyAc
         break
       case SETPLAYLIST:
         draft.playList = action.list
+        break
+      case SET_PLAY_LYRIC:
+        draft.currMusicInfo.lyric = action.lyric
+        break
+      case SET_PLAY_MUSIC:
+        draft.currMusicInfo.detailInfo = action.currMusic
         break
     }
   })
