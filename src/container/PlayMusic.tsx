@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styles from './_styles/PlayMusic.module.scss'
 
-import { Button, Progress } from 'antd-mobile'
+import { Button, Progress, Toast } from 'antd-mobile'
 import { adjustTime } from '@/untils/index'
 
 import { connect } from 'react-redux'
@@ -10,10 +10,13 @@ import { globalStates } from '@/type/inedx'
 import { IGetMusicInfo } from '@/plugins/Mp3/types/info'
 import { useHistory } from 'react-router-dom'
 import { ICurrMusicInfo } from '@/type/globalReducerState'
+import { CHANGE_PLAY_MUSIC_LOVE, CHANGE_LOCAL_MUSIC } from '@/store/actions'
 
 interface IProp {
   GlobalPlayList: GdListI
   currMusicInfo: ICurrMusicInfo
+  changePlayMusicLove: (state: boolean) => void
+  setLocalMusic: (musicList: any[], musicIds: any[]) => void
 }
 export interface MusicInfoI {
   name: string
@@ -41,6 +44,7 @@ const Home: React.SFC<IProp> = (props: IProp) => {
   const [currTime, setCurrTime ] = React.useState<number>(0)
   const [lyricTime, setlyricTime ] = React.useState<number>(0)
   const [playList, setPlayList] = React.useState({})
+  const [playMode, setPlayMode] = React.useState(window.player.getPlayMode)
   
   React.useEffect(() => {
     setPlayList(props.GlobalPlayList)
@@ -90,7 +94,70 @@ const Home: React.SFC<IProp> = (props: IProp) => {
     setIndexLyric(0)
     setPrecent(0)
   }
+
+  const handleAddLocalMusic = (): void => {
+    if (props.currMusicInfo.isLove) {
+    
+      props.changePlayMusicLove(false)
+
+      if (window.localStorage.getItem('localMusics')) {
+        let json: any = window.localStorage.getItem('localMusics')
+        let jsonId: any = window.localStorage.getItem('localMusicIds')
+
+        json = JSON.parse(json)
+        jsonId = JSON.parse(jsonId)
+
+        let index: number = jsonId.indexOf(props.currMusicInfo.detailInfo.id)
+
+        json.splice(index, 1)
+        jsonId.splice(index, 1)
+
+        window.localStorage.setItem('localMusics', JSON.stringify(json))
+        window.localStorage.setItem('localMusicIds', JSON.stringify(jsonId))
+
+        props.setLocalMusic(json, jsonId)
+      }
+    } else {
+
+      props.changePlayMusicLove(true)
+
+      if (window.localStorage.getItem('localMusics')) {
+        let json: any = window.localStorage.getItem('localMusics')
+        let jsonId: any = window.localStorage.getItem('localMusicIds')
   
+        json = JSON.parse(json)
+        json.push(props.currMusicInfo.detailInfo)
+  
+        jsonId = JSON.parse(jsonId)
+        jsonId.push(props.currMusicInfo.detailInfo.id)
+  
+        window.localStorage.setItem('localMusics', JSON.stringify(json))
+        window.localStorage.setItem('localMusicIds', JSON.stringify(jsonId))
+        props.setLocalMusic(json, jsonId)
+      } else {
+        let json: any = JSON.stringify([props.currMusicInfo.detailInfo])
+        let jsonId: any = JSON.stringify([props.currMusicInfo.detailInfo.id])
+  
+        window.localStorage.setItem('localMusics', json)
+        window.localStorage.setItem('localMusicIds', jsonId)
+        props.setLocalMusic(json, jsonId)
+      }
+    }
+  }
+
+  const playModeList = ['&#xe67b;', '&#xea43;', '&#xe620;']
+
+  const handleChangePlayMode = () => {
+    window.player.setPlayMode()
+
+    let msgList: string[] = [ '顺序', '随机', '单曲']
+    let msg = msgList[window.player.getPlayMode] + '播放'
+
+    Toast.success(msg)
+    
+    setPlayMode(window.player.getPlayMode)
+  }
+
   return(
     <div className={styles._home}>
       <div className={styles._homeMain}>
@@ -131,8 +198,8 @@ const Home: React.SFC<IProp> = (props: IProp) => {
           <span className={`${styles.layricTime} c-ml20`}>{adjustTime(lyricTime)}</span>
         </div>
         <div className={styles.btnGroup}>
-          <Button className={`${styles._homeBtn} ${styles.prevBtn} c-mr20`} onClick={handlePrevBtn}>
-            <i className={`icon-font x-y-center`}>&#xea43;</i></Button>
+          <Button className={`${styles._homeBtn} ${styles.prevBtn} c-mr20`} onClick={handleChangePlayMode}>
+            <i className={`icon-font x-y-center`} dangerouslySetInnerHTML={{__html: playModeList[playMode]}}></i></Button>
           <Button className={`${styles._homeBtn} ${styles.prevBtn}`} onClick={handlePrevBtn}>
             <i className={`icon-font x-y-center`}>&#xea44;</i></Button>
           <Button className={`${styles._homeBtn} ${styles.playBtn}`}
@@ -140,8 +207,10 @@ const Home: React.SFC<IProp> = (props: IProp) => {
             <i className="icon-font x-y-center">{ !play ? <>&#xe6a4;</> : <>&#xe63a;</>}</i></Button>
           <Button className={`${styles._homeBtn} ${styles.prevBtn}`} onClick={handleNextBtn}>
             <i className="icon-font x-y-center">&#xea47;</i></Button>
-          <Button className={`${styles._homeBtn} ${styles.prevBtn} c-ml20`} onClick={handlePrevBtn}>
-            <i className={`icon-font x-y-center`}>&#xe62a;</i></Button>
+          <Button className={`${styles._homeBtn} ${styles.prevBtn} c-ml20`} onClick={handleAddLocalMusic}>
+            <i className={`icon-font x-y-center`}>
+              { props.currMusicInfo.isLove ? <>&#xe79d;</> : <>&#xe62a;</> }
+            </i></Button>
         </div>
       </div>
     </div>
@@ -153,7 +222,10 @@ const mapStateToProps = (state: globalStates): { GlobalPlayList: any, currMusicI
   currMusicInfo: state.globalReducer.currMusicInfo
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({})
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  changePlayMusicLove: (state: boolean) => dispatch(CHANGE_PLAY_MUSIC_LOVE(state)),
+  setLocalMusic: (musicList: any[], musicIds: any[]) => dispatch(CHANGE_LOCAL_MUSIC(musicList, musicIds)),
+})
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

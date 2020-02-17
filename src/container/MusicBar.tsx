@@ -48,8 +48,6 @@ const MusicBar: React.SFC<IProps> = (props) => {
 
   const musicReady = async (info: IGetMusicInfo) => {
     setIndexLyric(0)
-    console.log(playList);
-    
     props.changeCurrMusic(playList[info.index])
   }
 

@@ -6,7 +6,11 @@ import {
   SET_PLAY_LYRIC,
   SET_PLAY_LYRIC_TYPE,
   SET_PLAY_MUSIC_TYPE,
-  SET_PLAY_MUSIC
+  SET_PLAY_MUSIC,
+  SET_LOCAL_MUSIC_TYPE,
+  SET_LOCAL_MUSIC,
+  SET_PLAY_MUSIC_LOVE_TYPE,
+  SET_PLAY_MUSIC_LOVE
 } from '../const'
 
 import {
@@ -15,6 +19,7 @@ import {
 
 import { Dispatch } from 'redux'
 import { parseLyric } from '@/untils'
+import { type } from 'os'
 
 export interface ISETLOADINGAction {
   type: SETLOADING_TYPE
@@ -39,8 +44,20 @@ export interface ISETPLAYMUSICAction {
   currMusic: any
 }
 
+export interface ISETLOCALMUSICAction {
+  type: SET_LOCAL_MUSIC_TYPE
+  musicList: any[]
+  musicIds: any[]
+}
+
+export interface ISETPLAYMUSICLOVEAction {
+  type: SET_PLAY_MUSIC_LOVE_TYPE
+  state: boolean
+}
+
 // 定义 modifyAction 类型，包含 IINCREMENTAction 和 IDECREMENTAction 接口类型
 export type ModifyAction = ISETLOADINGAction | ISETPLAYLISTAction | ISETPLAYLYRICAction | ISETPLAYMUSICAction
+  | ISETLOCALMUSICAction | ISETPLAYMUSICLOVEAction
 
 export const setLoading = (scope: string, loading: boolean): ISETLOADINGAction => ({
   type: SETLOADING,
@@ -93,3 +110,16 @@ export const changeMusicInfoAction = (currMusic: any) => (dispath: Dispatch) => 
       }
     })
 }
+
+// 读取本地音乐
+export const CHANGE_LOCAL_MUSIC = (musicList: any[], musicIds: any[]): ISETLOCALMUSICAction => ({
+  type: SET_LOCAL_MUSIC,
+  musicList,
+  musicIds
+})
+
+// 改变当前播放音乐收藏状态
+export const CHANGE_PLAY_MUSIC_LOVE = (state: boolean): ISETPLAYMUSICLOVEAction => ({
+  type: SET_PLAY_MUSIC_LOVE,
+  state
+})

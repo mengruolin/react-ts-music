@@ -93,8 +93,6 @@ const Index: React.SFC<IProps> = (props: IProps) => {
       if (musicDetail.songs[0]) {
         props.changeCurrMusic(musicDetail.songs[0])
         props.changeGlobalList([musicDetail.songs[0]])
-
-        //window.player.replaceMusicList([musicDetail.songs[0]])
       } else {
         Toast.fail('歌曲播放失败！')
       }
@@ -112,7 +110,7 @@ const Index: React.SFC<IProps> = (props: IProps) => {
         { caruseData.length > 0 ? <Caruse caruseInfo={caruseData}/> : ''}
       </div>
       <div className={styles._item}>
-        <div className={styles.svgIcon}>
+        <div className={styles.svgIcon}  onClick={() => history.push('/myMenu')}>
           <SvgItemLike width={'100%'} height={'100%'} />
         </div>
         <div className={styles.svgIcon}>
