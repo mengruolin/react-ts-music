@@ -9,6 +9,8 @@ const InitPlayer = lazy(() => import('@/container/InitPlayer'))
 const SongMenu = lazy(() => import('@/container/SongMenu'))
 const songResult = lazy(() => import('@/components/SongResults'))
 const myMenu = lazy(() => import('@/container/MyMenu'))
+const Search = lazy(() => import('@/components/Search'))
+
 
 export default function () {
   return (
@@ -23,6 +25,7 @@ export default function () {
             <Route exact path="/songMenu" component={SongMenu}></Route>
             <Route exact path="/songResult" component={songResult}></Route>
             <Route exact path="/myMenu" component={myMenu}></Route>
+            <Route exact path="/search" component={Search}></Route>
           </Switch>
         </DefaultLayout>
       </BrowserRouter>

@@ -12,6 +12,8 @@ import {
   Api_toplistDetail,
   Api_checkMusic,
   Api_songDetail,
+  Api_searchHotdetail,
+  Api_searchDefault,
 } from './types'
 
 export const createRequest = (methods: string, api: string) => {
@@ -44,3 +46,7 @@ export const getToplistDetail = createRequest('get', Api_toplistDetail) //所有
 export const getMuiscIsUse = createRequest('get', Api_checkMusic) //歌曲是否可播放
 
 export const getMusicDetail = createRequest('getl', Api_songDetail) //歌曲详情
+
+export const getHotSearchDefult = createRequest('get', Api_searchDefault)
+
+export const getHotSearchDetail = createRequest('get', Api_searchHotdetail) //热搜详情

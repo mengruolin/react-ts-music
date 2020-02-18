@@ -92,7 +92,7 @@
     overflow: hidden;
     box-sizing: border-box;
     padding: 1vw 0;
-    line-height: 4.45vw;
+    line-height: 4.2vw;
     span {
       font-size: 3.5vw;
       font-weight: 500;
@@ -117,12 +117,19 @@
   overflow: hidden;
   .itemMv {
     width: 50%;
-    height: 20vh;
+    height: 25vh;
     float: left;
+    overflow: hidden;
     padding: 2vh 2vw;
+    .mvName {
+      overflow: hidden;
+      height: 5vw;
+      width: 100%;
+      white-space: nowrap;
+    }
     img {
       width: 100%;
-      height: 100%;
+      height: 20vh;
     }
   }
 }

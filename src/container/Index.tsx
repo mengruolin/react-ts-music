@@ -101,9 +101,7 @@ const Index: React.SFC<IProps> = (props: IProps) => {
       Toast.fail(isPlay.message)
     }
   }
-  // const onRefresh = (): void => {
-  //   console.log(1)
-  // }
+
   return(
     <div className={styles._Index}>
       <div className={styles._caruse}>
@@ -166,7 +164,7 @@ const Index: React.SFC<IProps> = (props: IProps) => {
         { personalizedMv.map((item: any, key: number) => (
           <div className={styles.itemMv} key={key}>
             <img src={`${item.picUrl}?600y300`} alt={item.name} />
-            <span>{item.name}&nbsp;-&nbsp;{item.artistName}</span>
+            <div className={styles.mvName}>{item.name}&nbsp;-&nbsp;{item.artistName}</div>
           </div>
         ))}
         
