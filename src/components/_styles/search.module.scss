@@ -1,0 +1,39 @@
+._search {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #ffffff;
+  z-index: 100;
+  .searchBox {
+    position: fixed;
+    width: 100%;
+    height: 10vh;
+    z-index: 3;
+  }
+  ._main {
+    position: relative;
+    padding: 10vh 2vw 0 2vw;
+    overflow: hidden;
+    .hotSearchList {
+      line-height: 7vh;
+      height: 7vh;
+      width: 100%;
+      overflow: hidden;
+      .title {
+        font-size: 4vw;
+        font-weight: 500;
+      }
+      .icon {
+        margin: 2vh 0 0 2vw;
+        width: 2.5vh;
+        height: 2.5vh;
+      }
+      .count {
+        float: right;
+        margin-right: 5vw;
+        color: #999898;
+      }
+    }
+  }
+}

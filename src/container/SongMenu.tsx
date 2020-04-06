@@ -5,7 +5,14 @@ import { Toast, List, Button } from 'antd-mobile'
 import { getPlaylistDetail } from '@/api/request'
 import styles from './_styles/SongMenu.module.scss'
 import { MusicInfoI } from '@/container/PlayMusic'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+import { globalStates } from '@/type/inedx'
+import { CHANGE_PLAY_LIST } from '@/store/actions'
 
+interface IProps {
+  changeGlobalList: (playList: any[]) => void
+}
 
 interface ISongMenu {
   playlist: {
@@ -16,7 +23,7 @@ interface ISongMenu {
   }
 }
 
-const SongMenu: React.SFC = () => {
+const SongMenu: React.SFC<IProps> = (props) => {
   const Item = List.Item
   const location = useLocation()
   const history = useHistory()
@@ -37,6 +44,16 @@ const SongMenu: React.SFC = () => {
       Toast.fail('获取歌单详情失败。')
     }
   }
+
+  const handlePlayMusic = (playAll: boolean, index?: number): void => {
+    props.changeGlobalList(songMenu.playlist.tracks)
+
+    if(!playAll) {
+      setTimeout(() => {
+        window.player.setPlayMusic(index)
+      }, 0)
+    }
+  }
   return(
     <div className={styles.songMenu}>
       <div className={styles.cover}>
@@ -46,16 +63,16 @@ const SongMenu: React.SFC = () => {
       <div className={styles.main}>
         <div className={styles.musicList}>
           <div className={styles.btnGroup}>
-            <Button className={styles.playAll}>
+            <Button className={styles.playAll} onClick={() => handlePlayMusic(true)}>
             <i className="icon-font">&#xe701;</i>播放全部</Button>
             <div className={styles.otherHander}></div>
           </div>
           <div className={styles.listGroup}>
             <List renderHeader={() => (`共${songMenu.playlist.trackCount}首`)} className="my-list">
               { songMenu.playlist.tracks.map((item: any, key: number) => (
-                  <Item extra={(<i className="icon-font">&#xe701;</i>)} key={key} style={{height: '8vh'}}>
+                  <Item extra={(<i className="icon-font" onClick={() => handlePlayMusic(false, key)}>&#xe701;</i>)} key={key} style={{height: '8vh'}}>
                     <span className={styles.musicName}>{item.name}</span>
-                    <span className={styles.musicAuto}>-{item.ar[0].name}</span></Item>)
+                    <span className={styles.musicAuto}>{`\t-\t${item.ar[0].name}`}</span></Item>)
                 )}
             </List>
           </div>
@@ -64,5 +81,10 @@ const SongMenu: React.SFC = () => {
     </div>
   )
 }
+const mapStateToProps = (state: globalStates) => ({})
 
-export default SongMenu
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  changeGlobalList: (playList: any[]) => dispatch(CHANGE_PLAY_LIST(playList))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SongMenu)

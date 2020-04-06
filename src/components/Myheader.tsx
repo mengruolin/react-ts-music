@@ -2,10 +2,13 @@ import * as React from 'react'
 
 import styles from './_styles/header.module.scss'
 import SvgLogo from '@/assets/svg/header-logo.svg'
+import { useHistory } from 'react-router-dom'
 
 interface IProps {}
 
 const MyHeader: React.SFC<IProps> = (props) => {
+
+  const history = useHistory()
   return(
     <div className={styles._header}>
       <div className={styles.logo}>
@@ -16,7 +19,7 @@ const MyHeader: React.SFC<IProps> = (props) => {
         <span>发现</span>
         <span>商城</span>
       </div>
-      <div className={styles.search}>
+      <div className={styles.search} onClick={() => history.push('/search')}>
         <i className="icon-font">&#xe64c;</i>
       </div>
     </div>

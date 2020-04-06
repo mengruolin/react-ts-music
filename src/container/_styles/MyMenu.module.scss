@@ -1,0 +1,38 @@
+._myMenu {
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  .header {
+    position: fixed;
+    top: 0;
+    z-index: 133;
+    height: 7vh;
+    width: 100%;
+    background-color: rgba($color: #000000, $alpha: .5);
+    .goBack {
+      position: absolute;
+      top: 2vh;
+      left: 2vw;
+      color: azure;
+    }
+  }
+  .cover {
+    position: relative;
+    height: 30vh;
+    width: 100%;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .songsList {
+    position: relative;
+    top: 10px;
+    width: 100%;
+    overflow-x: auto;
+  }
+}

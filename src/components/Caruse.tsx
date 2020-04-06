@@ -33,10 +33,3 @@ const Caruse: React.SFC<IProps> = (props: IProps) => {
 }
 
 export default Caruse
-
-
-const styles: any = {
-  currImg: {
-    marginTop: '2vh'
-  }
-}

@@ -18,6 +18,8 @@ export const Api_playlistDetail = '/playlist/detail'  //获取歌单详情
 
 export const Api_songUrl: string = '/song/url'  //获取音乐 url
 
+export const Api_songDetail = '/song/detail'  //歌曲详情
+
 export const Api_checkMusic: string = '/check/music'  //音乐是否可用
 
 export const Api_search: string = '/search' //搜索接口

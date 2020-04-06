@@ -3,11 +3,13 @@ import Mp3 from '@/plugins/Mp3'
 import { connect } from 'react-redux';
 // import { Dispatch, bindActionCreators } from 'redux';
 import { globalStates } from '@/type/inedx';
-import { getMusicListAction } from '@/store/actions';
+import { getMusicListAction, CHANGE_LOCAL_MUSIC, CHANGE_PLAY_LIST } from '@/store/actions';
 declare var window: any
 
 export interface IProps {
   onGetPlayList: (id: string) => void
+  setLocalMusic: (musicList: any[], musicIds: any[]) => void
+  changeGlobalList: (playList: any[]) => void
   GlobalPlayList: any
 }
 
@@ -21,13 +23,22 @@ const InitPlayer: React.SFC<IProps> = (props) => {
     const player = new Mp3('globalAudio')
     window.player = player
     
-    props.onGetPlayList('524176061')
+    window.player.init({}, [])
 
+    if (window.localStorage.getItem('localMusicIds')) {
+      let localMusics = JSON.parse(window.localStorage.getItem('localMusics'))
+      let localMusicIds = JSON.parse(window.localStorage.getItem('localMusicIds'))
+
+      props.setLocalMusic(localMusics, localMusicIds)
+      props.changeGlobalList(localMusics)
+    } else {
+      props.onGetPlayList('524176061')
+    }
   }, [])
 
   useEffect(() => {
-   props.GlobalPlayList.playlist && (window as any).player.init({},  props.GlobalPlayList.playlist.trackIds) 
-  }, [props.GlobalPlayList.playlist])
+    props.GlobalPlayList[0] && window.player.replaceMusicList(props.GlobalPlayList)
+  }, [props.GlobalPlayList])
 
   return (
     <>
@@ -41,7 +52,9 @@ const mapStateToProps = (state: globalStates): { GlobalPlayList: any } => ({
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  onGetPlayList: (id: string) => dispatch(getMusicListAction({id}))
+  onGetPlayList: (id: string) => dispatch(getMusicListAction({id})),
+  setLocalMusic: (musicList: any[], musicIds: any[]) => dispatch(CHANGE_LOCAL_MUSIC(musicList, musicIds)),
+  changeGlobalList: (playList: any[]) => dispatch(CHANGE_PLAY_LIST(playList))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(InitPlayer)

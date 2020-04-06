@@ -21,7 +21,8 @@ export default class Mp3 {
 
   public id: string = ''
   public player = null as unknown as HTMLAudioElement
-  public playMode: string = 'random' //  order 顺序  random 随机 single 单曲循环
+  private playMode: string = 'random' //  order 顺序  random 随机 single 单曲循环
+  private modeList = ['order', 'random', 'single']
   private playList: playListI[] = []
   private buffer: boolean = false
   private inMusic: number = 0
@@ -64,6 +65,10 @@ export default class Mp3 {
     }
   }
 
+  public get getPlayMode(): number {
+    return this.modeList.indexOf(this.playMode)
+  }
+
   /**
    * init method
    * 
@@ -75,8 +80,9 @@ export default class Mp3 {
 
     this.player = document.getElementById(this.id) as HTMLAudioElement
     
-    this.player.src = this.playList[this.inMusic].id
-
+    if (this.playList[0]) {
+      this.player.src = this.playList[this.inMusic].id
+    }
     this.player.addEventListener("canplaythrough", (event) => {
       this.buffer = true
       this.keepPlay && this.player.play()
@@ -183,6 +189,19 @@ export default class Mp3 {
     this.nextMusic()
   }
 
+  public setPlayMode(state?: number): void {
+    //order 顺序  random 随机 single 单曲循环
+    state = this.modeList.indexOf(this.playMode)
+    state++
+    if(state === this.modeList.length) state = 0
+
+    this.playMode = this.modeList[state]
+  }
+
+  public setPlayMusic(index: number): void {
+    this.inMusic = index
+    this.play()
+  }
 
   // playList methods
   //

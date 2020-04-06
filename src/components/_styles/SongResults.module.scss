@@ -6,49 +6,74 @@
   background-color: rgb(255, 255, 255);
   .goBack {
     width: 100%;
-    line-height: 10vh;
+    line-height: 8vh;
     padding: 0 2vw;
     position: fixed;
-    background: rgba(151, 84, 84, 0.9);
-    color: #ffffff;
+    background: rgb(253, 253, 253);
+    color: #5c5757;
     font-size: 4vw;
     z-index: 33;
     top: 0;
   }
-  .scroll{
+  ._main{
     position: relative;
-    top: 10vh;
-    height: 90vh;
+    top: 8vh;
     width: 100%;
-    overflow: hidden;
     background: rgb(255, 255, 255);
-    ._main {
-      ._list {
-        height: 30vh;
-        width: 100%;
+    overflow: hidden;
+    .listTitle {
+      font-weight: 700;
+      line-height: 7vh;
+      font-size: 4.5vw;
+      padding: 0 3vw;
+    }
+    .recommList {
+      height: 30vh;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      padding: 2vh 2vw;
+      .imgCover {
+        width: 26vh;
+        height: 26vh;
         overflow: hidden;
-        display: flex;
-        padding: 2vh 2vw;
-        .imgCover {
-          width: 26vh;
-          height: 26vh;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .songList {
+        flex: 1;
+        height: 26vh;
+        padding: 0 4vw;
+        .songItems {
+          height: 33%;
+          line-height: 9vh;
+          width: 100%;
           overflow: hidden;
-          img {
-            width: 100%;
-            height: 100%;
-          }
         }
-        .songList {
-          flex: 1;
-          height: 26vh;
-          padding: 0 4vw;
-          .songItems {
-            height: 33%;
-            line-height: 9vh;
-            width: 100%;
-            overflow: hidden;
-          }
+      }
+    }
+    .wroldList {
+      height: 48vw;
+      width: 33vw;
+      padding: 1vh 1vw;
+      float: left;
+      box-sizing: border-box;
+      overflow: hidden;
+      .imgCover {
+        width: 33vw;
+        height: 33vw;
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: 100%;
         }
+      }
+      .listName {
+        padding: 1vh 1vw;
+        width: 100%;
+        text-align: center;
       }
     }
   }

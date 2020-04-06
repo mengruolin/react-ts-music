@@ -4,7 +4,12 @@ import { connect } from 'react-redux'
 import styles from './_styles/Index.module.scss'
 import Caruse from '@/components/Caruse'
 import { Toast, List } from 'antd-mobile'
-import { getPersonalized, getPersonalizedNewsong, getBanner, getPersonalizedMv } from '@/api/request'
+import { getPersonalized,
+  getPersonalizedNewsong,
+  getBanner,
+  getPersonalizedMv,
+  getMuiscIsUse,
+  getMusicDetail } from '@/api/request'
 import { useHistory } from 'react-router-dom'
 import { getCNParseInt } from '@/untils'
 import SvgItemLike from '@/assets/svg/item-like.svg'
@@ -12,9 +17,12 @@ import SvgSongFm from '@/assets/svg/song-fm.svg'
 import SvgSongList from '@/assets/svg/song-list.svg'
 import SvgHotComment from '@/assets/svg/hot-comment.svg'
 import SvgSingerList from '@/assets/svg/singer-list.svg'
+import { globalStates } from '@/type/inedx'
+import { CHANGE_CURR_MUSIC, CHANGE_PLAY_LIST } from '@/store/actions'
 
 interface IProps {
-
+  changeCurrMusic: (currMusic: any) => void
+  changeGlobalList: (playList: any[]) => void
 }
 
 interface IGridDate {
@@ -27,7 +35,7 @@ const Index: React.SFC<IProps> = (props: IProps) => {
 
   const [resetReq, setResetReq] = React.useState<boolean>(false)
   const [recommendPlaylist, setRecommendPlaylist] = React.useState<[]>([])
-  const [recommendedSong, setRecommendedSong] = React.useState<[]>([])
+  const [recommendedSong, setRecommendedSong] = React.useState<any[]>([])
   const [caruseData, setCaruseData] = React.useState<[]>([])
   const [personalizedMv, setPersonalizedMv] = React.useState<[]>([])
 
@@ -73,17 +81,34 @@ const Index: React.SFC<IProps> = (props: IProps) => {
   const showDetail = (id: string): any => {
     history.push('/songMenu', {id})
   }
+  
+  const handleClickMusicItem = async (index: number) => {
+    let isPlay = await getMuiscIsUse({
+      id: recommendedSong[index].id
+    })
+    if (isPlay.success) {
+      let musicDetail = await getMusicDetail({
+        ids: recommendedSong[index].id
+      })
+      if (musicDetail.songs[0]) {
+        props.changeCurrMusic(musicDetail.songs[0])
+        props.changeGlobalList([musicDetail.songs[0]])
+      } else {
+        Toast.fail('歌曲播放失败！')
+      }
+      
+    } else {
+      Toast.fail(isPlay.message)
+    }
+  }
 
-  // const onRefresh = (): void => {
-  //   console.log(1)
-  // }
   return(
     <div className={styles._Index}>
       <div className={styles._caruse}>
         { caruseData.length > 0 ? <Caruse caruseInfo={caruseData}/> : ''}
       </div>
       <div className={styles._item}>
-        <div className={styles.svgIcon}>
+        <div className={styles.svgIcon}  onClick={() => history.push('/myMenu')}>
           <SvgItemLike width={'100%'} height={'100%'} />
         </div>
         <div className={styles.svgIcon}>
@@ -123,7 +148,7 @@ const Index: React.SFC<IProps> = (props: IProps) => {
       <div className={styles.recommendedSong}>
         <List renderHeader={() => (`共${recommendedSong.length}首`)} className="my-list">
           {recommendedSong.map((item: any, key: number) => (
-            <Item extra={(<i className="icon-font">&#xe701;</i>)} key={key} style={{height: '8vh'}}>
+            <Item extra={(<i className="icon-font" onClick={ () => handleClickMusicItem(key) }>&#xe701;</i>)} key={key} style={{height: '8vh'}}>
               <img src={`${item.picUrl}?40y40`} alt=""/>
               <span className={styles.musicName}>{item.song.name}</span>
               <span className={styles.musicAuto}>{ `\t-\t${item.song.artists[0].name}`}</span>
@@ -139,7 +164,7 @@ const Index: React.SFC<IProps> = (props: IProps) => {
         { personalizedMv.map((item: any, key: number) => (
           <div className={styles.itemMv} key={key}>
             <img src={`${item.picUrl}?600y300`} alt={item.name} />
-            <span>{item.name}&nbsp;-&nbsp;{item.artistName}</span>
+            <div className={styles.mvName}>{item.name}&nbsp;-&nbsp;{item.artistName}</div>
           </div>
         ))}
         
@@ -153,5 +178,11 @@ const Index: React.SFC<IProps> = (props: IProps) => {
   )
 }
 
+const mapStateToProps = (state: globalStates): {} => ({})
 
-export default connect()(Index)
+const mapDispatchToProps = (dispatch: any) => ({
+  changeCurrMusic: (currMusic: any) => dispatch(CHANGE_CURR_MUSIC(currMusic)),
+  changeGlobalList: (playList: any[]) => dispatch(CHANGE_PLAY_LIST(playList))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Index)
