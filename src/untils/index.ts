@@ -75,3 +75,18 @@ export const getCNParseInt = (count: string | number): string => {
     return count
   }
 }
+
+export const getLoaclStorage = (key: string): any => {
+  return !window.localStorage.getItem(key) ? null 
+    : JSON.parse(window.localStorage.getItem(key) as string)
+}
+
+export const setLoaclStorage = (key: string, val: any): void => {
+  const preData: any = getLoaclStorage(key)
+
+  if (!preData) {
+    window.localStorage.setItem('key', JSON.stringify(val))
+  } else {
+    
+  }
+}
