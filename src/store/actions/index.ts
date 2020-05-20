@@ -19,7 +19,6 @@ import {
 
 import { Dispatch } from 'redux'
 import { parseLyric } from '@/untils'
-import { type } from 'os'
 
 export interface ISETLOADINGAction {
   type: SETLOADING_TYPE

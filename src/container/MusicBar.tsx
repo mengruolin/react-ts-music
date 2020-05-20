@@ -24,6 +24,12 @@ const MusicBar: React.SFC<IProps> = (props) => {
   const [currTime, setCurrTime ] = React.useState<number>(0)
   const [playList, setPlayList] = React.useState({})
 
+  const { changeCurrMusic } = props
+  const musicReady = React.useMemo(() => (info: IGetMusicInfo) => {
+    setIndexLyric(0)
+    changeCurrMusic(playList[info.index])
+  }, [playList, changeCurrMusic])
+
   React.useEffect(() => {
    setPlayList(props.globalPlayList)
   }, [props.globalPlayList])
@@ -38,18 +44,13 @@ const MusicBar: React.SFC<IProps> = (props) => {
         window.player.remove(onUpdata)
       }
     }
-  }, [playList, props.currMusicInfo.detailInfo.id])
+  }, [playList, props.currMusicInfo.detailInfo.id, musicReady])
 
   React.useEffect(() => {
     if (indexLyric < props.currMusicInfo.lyric.length - 1 && currTime * 1000 >= props.currMusicInfo.lyric[indexLyric+1][0]) {
       setIndexLyric(indexLyric + 1)
     }
   }, [currTime, indexLyric, props.currMusicInfo.lyric])
-
-  const musicReady = async (info: IGetMusicInfo) => {
-    setIndexLyric(0)
-    props.changeCurrMusic(playList[info.index])
-  }
 
   const musicUpdata = (info: IGetMusicInfo) => {
     setCurrTime(info.currentTime)

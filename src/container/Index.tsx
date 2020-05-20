@@ -33,7 +33,7 @@ interface IGridDate {
 const Index: React.SFC<IProps> = (props: IProps) => {
   const Item = List.Item
 
-  const [resetReq, setResetReq] = React.useState<boolean>(false)
+  const [resetReq /*, setResetReq*/] = React.useState<boolean>(false)
   const [recommendPlaylist, setRecommendPlaylist] = React.useState<[]>([])
   const [recommendedSong, setRecommendedSong] = React.useState<any[]>([])
   const [caruseData, setCaruseData] = React.useState<[]>([])
