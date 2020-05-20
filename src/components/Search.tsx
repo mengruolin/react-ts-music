@@ -10,32 +10,27 @@ interface IProps {
 
 const Search: React.SFC<IProps> = (props) => {
 
-  const [hotSearchList, setHotSearchList] = React.useState<any[]>([])
-  const [searchDefault, setSearchDefault] = React.useState<string>('歌曲/歌手/歌单/专辑')
-  const [historySearch, setHistorySearch] = React.useState<any[]>([])
+  const [hotSearchList, setHotSearchList] = React.useState<any[]>([]) //热搜列表
+  const [searchDefault, setSearchDefault] = React.useState<string>('歌曲/歌手/歌单/专辑')  //搜索关键字
+  const [historySearch, setHistorySearch] = React.useState<any[]>([]) //搜索历史，保存在localStorge中
 
-  const localSearch = window.localStorage.localSearch || []
-
+  // 初始化Hook
   React.useEffect(() => {
     mounted()
   }, [])
 
-  React.useEffect(() => {
-    const localSearch = window.localStorage.localSearch || []
-    console.log(getLoaclStorage('localMusics'))
-
-    setHistorySearch(() => localSearch)
-
-  }, [localSearch])
-
   const mounted = async () => {
-    let defaultWrold = await getHotSearchDefult()
-    
+    //默认搜索关键字
+    const defaultWrold = await getHotSearchDefult()
     setSearchDefault((pre) => defaultWrold.data.realkeyword || pre)
 
-    let hotList = await getHotSearchDetail()
+    //热搜列表
+    const hotList = await getHotSearchDetail()
     setHotSearchList(() => hotList.data || [])
-    
+
+    //本地搜索历史
+    const localSearch = getLoaclStorage('localSearch') || []
+    setHistorySearch(() => localSearch)
   } 
 
   return(

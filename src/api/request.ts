@@ -22,6 +22,7 @@ export const createRequest = (methods: string, api: string) => {
     return res
   }
 }
+// 接口功能注释同 type.ts 文件
 
 export const getArtList = createRequest('get', Api_artistList)
 
@@ -41,7 +42,7 @@ export const getBanner = createRequest('get', Api_banner) //轮播图
 
 export const getPersonalizedMv = createRequest('get',  Api_personalizedMv)  //推荐,MV
 
-export const getToplistDetail = createRequest('get', Api_toplistDetail) //所有榜单内容摘要
+export const getToplistDetail = createRequest('getl', Api_toplistDetail) //所有榜单内容摘要
 
 export const getMuiscIsUse = createRequest('get', Api_checkMusic) //歌曲是否可播放
 
