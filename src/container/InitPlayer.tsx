@@ -19,6 +19,8 @@ export interface IProps {
 
 const InitPlayer: React.SFC<IProps> = (props) => {
 
+  const {setLocalMusic, changeGlobalList, onGetPlayList} = props
+  
   useEffect(() => {
     const player = new Mp3('globalAudio')
     window.player = player
@@ -29,12 +31,12 @@ const InitPlayer: React.SFC<IProps> = (props) => {
       let localMusics = JSON.parse(window.localStorage.getItem('localMusics'))
       let localMusicIds = JSON.parse(window.localStorage.getItem('localMusicIds'))
 
-      props.setLocalMusic(localMusics, localMusicIds)
-      props.changeGlobalList(localMusics)
+      setLocalMusic(localMusics, localMusicIds)
+      changeGlobalList(localMusics)
     } else {
-      props.onGetPlayList('524176061')
+      onGetPlayList('524176061')
     }
-  }, [])
+  }, [setLocalMusic, changeGlobalList, onGetPlayList])
 
   useEffect(() => {
     props.GlobalPlayList[0] && window.player.replaceMusicList(props.GlobalPlayList)

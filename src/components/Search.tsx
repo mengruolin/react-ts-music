@@ -14,6 +14,8 @@ const Search: React.SFC<IProps> = (props) => {
   const [searchDefault, setSearchDefault] = React.useState<string>('歌曲/歌手/歌单/专辑')
   const [historySearch, setHistorySearch] = React.useState<any[]>([])
 
+  const localSearch = window.localStorage.localSearch || []
+
   React.useEffect(() => {
     mounted()
   }, [])
@@ -24,7 +26,7 @@ const Search: React.SFC<IProps> = (props) => {
 
     setHistorySearch(() => localSearch)
 
-  }, [window.localStorage.localSearch])
+  }, [localSearch])
 
   const mounted = async () => {
     let defaultWrold = await getHotSearchDefult()
@@ -54,12 +56,9 @@ const Search: React.SFC<IProps> = (props) => {
         {hotSearchList.map((item: any, key: number) => (
           <div key={key} className={styles.hotSearchList}>
             <span className={styles.title}>{key+1}&nbsp;&nbsp;{item.searchWord}</span>
-            {item.iconUrl?
-              <img src={item.iconUrl} className={styles.icon} alt=""/>
-              :
-              <></>
+            {
+              item.iconUrl && <img src={item.iconUrl} className={styles.icon} alt=""/>
             }
-
             <span className={styles.count}>{item.score}</span>
           </div>
         ))}
