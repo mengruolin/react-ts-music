@@ -12,6 +12,7 @@ interface IProps {
 const MyMenu: React.SFC<IProps> = (props) => {
   const history = useHistory()
   const Item = List.Item
+  const { myLoveList } = props
 
   return (
     <div className={styles._myMenu}>
@@ -19,11 +20,11 @@ const MyMenu: React.SFC<IProps> = (props) => {
         <i className={`${styles.goBack} icon-font`} onClick={() => history.go(-1)}>&#xe716;</i>
       </div>
       <div className={styles.cover}>
-        <img src={`${props.myLoveList[0].al.picUrl}?param=600y300`} alt=""/>
+        {myLoveList[0] && <img src={`${myLoveList[0].al.picUrl}?param=600y300`} alt=""/>}
       </div>
       <div className={styles.songsList}>
-        <List renderHeader={() => (`共${props.myLoveList.length}首`)} className="my-list">
-              { props.myLoveList.map((item: any, key: number) => (
+        <List renderHeader={() => (`共${myLoveList.length}首`)} className="my-list">
+              { myLoveList[0] && myLoveList.map((item: any, key: number) => (
                   <Item extra={(<i className="icon-font">&#xe701;</i>)} key={key} style={{height: '8vh'}}>
                     <span className={styles.musicName}>{item.name}</span>
                     <span className={styles.musicAuto}>{`\t-\t${item.ar[0].name}`}</span></Item>)
