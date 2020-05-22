@@ -16,7 +16,17 @@
     padding: 10vh 2vw 0 2vw;
     overflow: hidden;
     .localSearch {
-      
+      padding:2vh 0;
+      span{
+        padding:0.5vh 1vh;
+        display: inline-block;
+        border-radius: 5vh;
+        background-color: #efefef;
+        font-size:1.5vw;
+        border:1px solid #ccc;
+        margin-right:0.5vh;
+        margin-bottom: 0.8vh;
+      }
     }
     .hotSearchList {
       line-height: 7vh;
@@ -36,6 +46,25 @@
         float: right;
         margin-right: 5vw;
         color: #999898;
+      }
+    }
+  }
+  ._searchList{
+    padding:5vh 1vh 0 1vh;
+    width:100vw;
+    p{
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+      border-bottom:1px solid #efefef;
+      height: 5vh;
+      line-height: 5vh;
+      i{
+        margin-right: 1vh;
+      }
+      span{
+        float:right;
+        padding-right: 3vh;
       }
     }
   }
