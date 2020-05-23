@@ -12,7 +12,7 @@ import { getPersonalized,
   getPersonalizedMv,
   getMuiscIsUse,
   getMusicDetail } from '@/api/request'
-import { Toast, List } from 'antd-mobile'
+import { Toast } from 'antd-mobile'
 import { useHistory } from 'react-router-dom'
 
 
@@ -135,14 +135,18 @@ const Search: React.SFC<IProps> = (props) => {
 
   async function searchMount(searchWorld: any) {
     const searchList = await getSearchMultimatch({ keywords: searchWorld, type: 1018})
-    if(searchList.result.playList){
-      setPlayList(()=>searchList.result.playList.playLists || [])
-    }
-    if(searchList.result.album){
-      setAlbum(()=>searchList.result.album.albums || [])
-    }
-    if(searchList.result.song.songs){
-      setSong(()=>searchList.result.song.songs || [])
+    if(searchList){
+      if(searchList.result.playList){
+        setPlayList(()=>searchList.result.playList.playLists || [])
+      }
+      if(searchList.result.album){
+        setAlbum(()=>searchList.result.album.albums || [])
+      }
+      if(searchList.result.song.songs){
+        setSong(()=>searchList.result.song.songs || [])
+      }
+    }else{
+      Toast.fail('获取歌单失败!')
     }
   }
   const getSearchChangeWorld = (value: string) => {
@@ -158,21 +162,9 @@ const Search: React.SFC<IProps> = (props) => {
     history.push("/songMenu",{id:item.id})
     var arr1 = getLoaclStorage('localSearch');
     if(arr1){
-      for(var i=0;i<arr1.length;i++){
-        if(arr1[i].id !==item.id){
-          var arr =[];
-          arr.push({name:item.name,id:item.id})
-          arr.push(...arr1)
-          for(var k=0;k<arr.length-1;k++){
-            for(var j=k+1;j<arr.length;j++){
-                if(arr[k].id==arr[j].id){
-                    arr.splice(j--,1);
-                }
-            }
-        }
-          setLoaclStorage('localSearch',arr)
-        }
-      }
+
+      let hasL: boolean = arr1.some((v: any) => v.id === item.id)
+      !hasL && setLoaclStorage('localSearch',[{name:item.name,id:item.id},...arr1])
     }else{
       setLoaclStorage('localSearch',[{name:item.name,id:item.id}])
 
