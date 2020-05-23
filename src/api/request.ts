@@ -14,6 +14,7 @@ import {
   Api_songDetail,
   Api_searchHotdetail,
   Api_searchDefault,
+  Api_search,
 } from './types'
 
 export const createRequest = (methods: string, api: string) => {
@@ -51,3 +52,5 @@ export const getMusicDetail = createRequest('getl', Api_songDetail) //歌曲详�
 export const getHotSearchDefult = createRequest('get', Api_searchDefault)
 
 export const getHotSearchDetail = createRequest('get', Api_searchHotdetail) //热搜详情
+
+export const getSearchMultimatch = createRequest('get',Api_search)//搜索关键字
