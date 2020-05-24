@@ -11,6 +11,7 @@ import {
   getMusicDetail } from '@/api/request'
 import { Toast } from 'antd-mobile'
 import { useHistory } from 'react-router-dom'
+import { useDebounce } from '@/hooks/index'
 
 
 interface IProps {
@@ -25,16 +26,14 @@ interface IProps {
 
 const Search: React.SFC<IProps> = (props) => {
 
-  const [hotSearchList, setHotSearchList] = React.useState<any[]>([]) //热搜列表
-  const [searchDefault, setSearchDefault] = React.useState<string>('歌曲/歌手/歌单/专辑')  //搜索关键字
-  const [historySearch, setHistorySearch] = React.useState<any[]>([]) //搜索历史，保存在localStorge中
-  const [searchWorld, setSearchWorld] = React.useState<string>("")
-  const [searchListFlag, setSearchListFlag] = React.useState<boolean>(false)
-  const [flag, setFlag] = React.useState<boolean>(false)
-  const [song,setSong] = React.useState<any[]>([])
-  const [album,setAlbum] = React.useState<any[]>([])
-  const [songList,setSongList] = React.useState<any[]>([])
-  const [videoList, setVideoList] = React.useState<any[]>([])
+  const [hotSearchList, setHotSearchList] = React.useState<any[]>([]) // 热搜列表
+  const [searchDefault, setSearchDefault] = React.useState<string>('歌曲/歌手/歌单/专辑')  // 搜索关键字
+  const [historySearch, setHistorySearch] = React.useState<any[]>([]) // 搜索历史，保存在localStorge中
+  const [searchWorld, setSearchWorld] = React.useState<string>("")  // 搜索关键字
+  const [song,setSong] = React.useState<any[]>([])  // 单曲列表
+  const [album,setAlbum] = React.useState<any[]>([])  // 专辑列表
+  const [songList,setSongList] = React.useState<any[]>([])  // 歌单列表
+  const [videoList, setVideoList] = React.useState<any[]>([]) // 视频列表
 
   const history = useHistory()
 
@@ -57,23 +56,40 @@ const Search: React.SFC<IProps> = (props) => {
     setHistorySearch(() => localSearch)
 
   }
+
+  // 关键字查询
+  const searchMount: (searchWorld: string) => void = useDebounce(async (searchWorld: string) => {
+    const searchList = await getSearchMultimatch({ keywords: searchWorld, type: 1018, limit: 100})
+    if (Object.keys(searchList.result).length > 0) {
+      if(searchList.result.playList){
+        setSongList(()=>searchList.result.playList.playLists || [])
+      }
+      if(searchList.result.album){
+        setAlbum(()=>searchList.result.album.albums || [])
+      }
+      if(searchList.result.song.songs){
+        setSong(()=>searchList.result.song.songs || [])
+      }
+      if(searchList.result.video) {
+        setVideoList(() => searchList.result.video.videos || [])
+      }
+    }
+  }, 500, [])
+
+  // 监听 searchWorld 变化
   React.useEffect(() => {
     //搜索框模糊查询
-    if (flag && searchWorld !== "") {
-      setSearchListFlag(()=>false)
+    if (searchWorld !== "") {
       searchMount(searchWorld)
-    }
-    if (searchWorld === "") {
+    } else {
       setSong([])
       setAlbum([])
       setSongList([])
-      setSearchListFlag(()=>true)
+      setVideoList([])
     }
-    return () => {
-      setFlag(() => false)
-    }
-  }, [searchWorld, flag])
+  }, [searchWorld, searchMount])
 
+  // 单曲播放
   const handleClickMusicItem = async (index: number) => {
     try {
       let isPlay = await getMuiscIsUse({
@@ -98,32 +114,7 @@ const Search: React.SFC<IProps> = (props) => {
     }
   }
 
-  async function searchMount(searchWorld: any) {
-    const searchList = await getSearchMultimatch({ keywords: searchWorld, type: 1018, limit: 100})
-    if (Object.keys(searchList.result).length > 0) {
-      if(searchList.result.playList){
-        setSongList(()=>searchList.result.playList.playLists || [])
-      }
-      if(searchList.result.album){
-        setAlbum(()=>searchList.result.album.albums || [])
-      }
-      if(searchList.result.song.songs){
-        setSong(()=>searchList.result.song.songs || [])
-      }
-      if(searchList.result.video) {
-        setVideoList(() => searchList.result.video.videos || [])
-      }
-    }
-  }
-  const getSearchChangeWorld = (value: string) => {
-    setSearchWorld(value)
-    setFlag(() => true)
-  }
-
-  const handleOnCancel = () => {
-    setSearchWorld("")
-    setFlag(() => false)
-  }
+  // 查看歌单专辑
   const showDetail =(item:any):any => {
     history.push("/songMenu",{id:item.id})
     var arr1 = getLoaclStorage('localSearch');
@@ -146,17 +137,17 @@ const Search: React.SFC<IProps> = (props) => {
     Toast.success('清除成功')
   }
 
-  const handleSelectHotSearch = (keyWord: string) => {
-    setSearchWorld(keyWord)
-    searchMount(keyWord)
-  }
   return (
     <div className={styles._search}>
       <div className={styles.searchBox}>
-        <SearchBar placeholder={searchDefault} value={searchWorld} onCancel={() => handleOnCancel()} onChange={(value) => getSearchChangeWorld(value)} />
+        <SearchBar
+          placeholder={searchDefault}
+          value={searchWorld}
+          onCancel={() => {setSearchWorld("")}}
+          onChange={(keyWord: string) => {setSearchWorld(keyWord)}} />
       </div>
       {
-        searchListFlag
+        searchWorld === ''
         ? 
         <div className={styles._main}>
           {
@@ -184,7 +175,7 @@ const Search: React.SFC<IProps> = (props) => {
           }
           <div>热搜</div>
           {hotSearchList.map((item: any, key: number) => (
-            <div key={key} className={styles.hotSearchList} onClick={() => handleSelectHotSearch(item.searchWord)}>
+            <div key={key} className={styles.hotSearchList} onClick={() => setSearchWorld(item.searchWord)}>
               <span className={styles.title}>{key + 1}&nbsp;&nbsp;{item.searchWord}</span>
               {
                 item.iconUrl && <img src={item.iconUrl} className={styles.icon} alt="" />
