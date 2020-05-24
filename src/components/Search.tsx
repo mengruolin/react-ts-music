@@ -33,11 +33,8 @@ const Search: React.SFC<IProps> = (props) => {
   const [flag, setFlag] = React.useState<boolean>(false)
   const [song,setSong] = React.useState<any[]>([])
   const [album,setAlbum] = React.useState<any[]>([])
-  const [playList,setPlayList] = React.useState<any[]>([])
-  //const [recommendPlaylist, setRecommendPlaylist] = React.useState<[]>([])
-  // const [recommendedSong, setRecommendedSong] = React.useState<any[]>([])
-  // const [caruseData, setCaruseData] = React.useState<[]>([])
-  // const [personalizedMv, setPersonalizedMv] = React.useState<[]>([])
+  const [songList,setSongList] = React.useState<any[]>([])
+  const [videoList, setVideoList] = React.useState<any[]>([])
 
   const history = useHistory()
 
@@ -69,7 +66,7 @@ const Search: React.SFC<IProps> = (props) => {
     if (searchWorld === "") {
       setSong([])
       setAlbum([])
-      setPlayList([])
+      setSongList([])
       setSearchListFlag(()=>true)
     }
     return () => {
@@ -102,16 +99,19 @@ const Search: React.SFC<IProps> = (props) => {
   }
 
   async function searchMount(searchWorld: any) {
-    const searchList = await getSearchMultimatch({ keywords: searchWorld, type: 1018})
+    const searchList = await getSearchMultimatch({ keywords: searchWorld, type: 1018, limit: 100})
     if (Object.keys(searchList.result).length > 0) {
       if(searchList.result.playList){
-        setPlayList(()=>searchList.result.playList.playLists || [])
+        setSongList(()=>searchList.result.playList.playLists || [])
       }
       if(searchList.result.album){
         setAlbum(()=>searchList.result.album.albums || [])
       }
       if(searchList.result.song.songs){
         setSong(()=>searchList.result.song.songs || [])
+      }
+      if(searchList.result.video) {
+        setVideoList(() => searchList.result.video.videos || [])
       }
     }
   }
@@ -143,6 +143,12 @@ const Search: React.SFC<IProps> = (props) => {
     setLoaclStorage('localSearch', '')
     const localSearch = getLoaclStorage('localSearch') || []
     setHistorySearch(() => localSearch)
+    Toast.success('清除成功')
+  }
+
+  const handleSelectHotSearch = (keyWord: string) => {
+    setSearchWorld(keyWord)
+    searchMount(keyWord)
   }
   return (
     <div className={styles._search}>
@@ -178,7 +184,7 @@ const Search: React.SFC<IProps> = (props) => {
           }
           <div>热搜</div>
           {hotSearchList.map((item: any, key: number) => (
-            <div key={key} className={styles.hotSearchList}>
+            <div key={key} className={styles.hotSearchList} onClick={() => handleSelectHotSearch(item.searchWord)}>
               <span className={styles.title}>{key + 1}&nbsp;&nbsp;{item.searchWord}</span>
               {
                 item.iconUrl && <img src={item.iconUrl} className={styles.icon} alt="" />
@@ -192,30 +198,38 @@ const Search: React.SFC<IProps> = (props) => {
           {
             song[0] &&
             song.map((item: any, index: number)=>(
-              <div className={styles.search_Item} key={item.id} onClick={()=>{handleClickMusicItem(index)}}>
-                <i className="icon-font">&#xe64c;</i>
-                {item.name}
-                <span className="icon-font">&#xe655;</span>
+              <div className={styles.song_item} key={item.id} onClick={()=>{handleClickMusicItem(index)}}>
+                <i className="icon-font">&#xe60e;</i>
+                <span className="c-ml20">{item.name}{'\u00A0'}-{'\u00A0'}单曲</span>
               </div>
             ))
           }
           {
-            album?
+            album &&
             album.map((item)=>(
-            <p key={item.id} onClick={()=>{showDetail(item)}}>
-              <i className="icon-font">&#xe64c;</i>
-              {item.name}</p>
+            <div className={styles.album_item} key={item.id} onClick={()=>{showDetail(item)}}>
+              <i className="icon-font">&#xe60a;</i>
+              <span className="c-ml20">{item.name}{'\u00A0'}-{'\u00A0'}专辑</span>
+            </div>
             ))
-            :<></>
           }
           {
-            playList?
-            playList.map((item)=>(
-            <p key={item.id}  onClick={()=>{showDetail(item)}}>
-              <i className="icon-font">&#xe64c;</i>
-              {item.name}</p>
+            songList &&
+            songList.map((item)=>(
+            <div className={styles.songList_item} key={item.id}  onClick={()=>{showDetail(item)}}>
+              <i className="icon-font">&#xe61b;</i>
+              <span className="c-ml20">{item.name}{'\u00A0'}-{'\u00A0'}歌单</span>
+            </div>
             ))
-            :<></>
+          }
+          {
+            videoList &&
+            videoList.map((item)=>(
+            <div className={styles.songList_item} key={item.vid}>
+              <i className="icon-font">&#xe600;</i>
+              <span className="c-ml20">{item.title}{'\u00A0'}-{'\u00A0'}视频</span>
+            </div>
+            ))
           }
         </div>
       }

@@ -53,6 +53,8 @@ const SongMenu: React.SFC<IProps> = (props) => {
         window.player.setPlayMusic(index)
       }, 0)
     }
+
+    window.player.play()
   }
   return(
     <div className={styles.songMenu}>

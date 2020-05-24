@@ -65,21 +65,29 @@
     }
   }
   ._searchList {
-    padding:8vh 1vw;
+    padding:8vh 10px;
     width:100vw;
-    .search_Item {
+    .song_item {
       overflow: hidden;
       text-overflow:ellipsis;
       white-space: nowrap;
       border-bottom:1px solid #efefef;
-      height: 5vh;
-      line-height: 5vh;
-      i{
-        margin-right: 1vh;
-      }
-      span{
-        float:right;
-        padding-right: 3vh;
+      height: 7vh;
+      line-height: 7vh;
+    }
+    .album_item {
+      height: 7vh;
+      line-height: 7vh;
+      overflow: hidden;
+      border-bottom:1px solid #efefef;
+    }
+    .songList_item {
+      height: 7vh;
+      line-height: 7vh;
+      overflow: hidden;
+      border-bottom:1px solid #efefef;
+      &:last-child {
+        border-bottom-style: none;
       }
     }
   }
