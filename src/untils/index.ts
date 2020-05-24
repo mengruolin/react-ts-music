@@ -1,3 +1,6 @@
+import moment from 'moment'
+
+
 /**
  * 歌词播放时间解析
  * @param text 
@@ -107,4 +110,11 @@ export const setLoaclStorage = (key: string, val: any): void => {
   } else {
     window.localStorage.setItem(key, JSON.stringify(val))
   }
+}
+
+
+// Moment
+export const DataFromNow = (Date: Date): string => {
+  moment.locale('zh-cn')
+  return moment(Date).fromNow()
 }

@@ -9,7 +9,8 @@ import { getPersonalized,
   getBanner,
   getPersonalizedMv,
   getMuiscIsUse,
-  getMusicDetail } from '@/api/request'
+  getMusicDetail,
+  getMvDetail } from '@/api/request'
 import { useHistory } from 'react-router-dom'
 import { getCNParseInt } from '@/untils'
 import SvgItemLike from '@/assets/svg/item-like.svg'
@@ -102,6 +103,14 @@ const Index: React.SFC<IProps> = (props: IProps) => {
     }
   }
 
+  const handlePlayMv = async (item: any) => {
+    let res = await getMvDetail({mvid: item.id})
+    if (!res.data) {
+      return Toast.fail('获取MV信息失败')
+    }
+    history.push('/mvPlay', res.data)
+  }
+
   return(
     <div className={styles._Index}>
       <div className={styles._caruse}>
@@ -162,7 +171,7 @@ const Index: React.SFC<IProps> = (props: IProps) => {
       </div>
       <div className={styles.recommendedMv}>
         { personalizedMv.map((item: any, key: number) => (
-          <div className={styles.itemMv} key={key}>
+          <div className={styles.itemMv} key={key} onClick={() => {handlePlayMv(item)}}>
             <img src={`${item.picUrl}?600y300`} alt={item.name} />
             <div className={styles.mvName}>{item.name}&nbsp;-&nbsp;{item.artistName}</div>
           </div>

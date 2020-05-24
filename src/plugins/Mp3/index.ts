@@ -173,8 +173,11 @@ export default class Mp3 {
     this.player.play()
   }
 
-  private randomPlay(): void {
-
+  private randomPlay() {
+    if (this.playList.length === 1) {
+      return this.player.play()
+    }
+    
     let randomNum = Math.floor(Math.random() * this.playList.length)
     while (randomNum === this.inMusic) {
       randomNum = Math.floor(Math.random() * this.playList.length)

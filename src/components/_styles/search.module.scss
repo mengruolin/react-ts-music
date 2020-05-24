@@ -1,6 +1,10 @@
 ._search {
   position: absolute;
   top: 0;
+  left: 0;
+  // right: 0;
+  // bottom: 0;
+  // height: auto;
   width: 100vw;
   min-height: 100vh;
   background-color: #ffffff;
@@ -15,14 +19,25 @@
     position: relative;
     padding: 10vh 2vw 0 2vw;
     overflow: hidden;
+    .localHistory_title {
+      display: flex;
+      span {
+        width: 30vw;
+      }
+      .clearSearchHistory {
+        flex: 1;
+        color: #7c7c7c;
+        text-align: right;
+      }
+    }
     .localSearch {
       padding:2vh 0;
       span{
         padding:0.5vh 1vh;
         display: inline-block;
-        border-radius: 5vh;
+        border-radius: 5px;
         background-color: #efefef;
-        font-size:1.5vw;
+        font-size:3.5vw;
         border:1px solid #ccc;
         margin-right:0.5vh;
         margin-bottom: 0.8vh;
@@ -49,10 +64,10 @@
       }
     }
   }
-  ._searchList{
-    padding:5vh 1vh 0 1vh;
+  ._searchList {
+    padding:8vh 1vw;
     width:100vw;
-    p{
+    .search_Item {
       overflow: hidden;
       text-overflow:ellipsis;
       white-space: nowrap;

@@ -15,6 +15,8 @@ import {
   Api_searchHotdetail,
   Api_searchDefault,
   Api_search,
+  Api_MvDetail,
+  Api_commentMv,
 } from './types'
 
 export const createRequest = (methods: string, api: string) => {
@@ -54,3 +56,8 @@ export const getHotSearchDefult = createRequest('get', Api_searchDefault)
 export const getHotSearchDetail = createRequest('get', Api_searchHotdetail) //热搜详情
 
 export const getSearchMultimatch = createRequest('get',Api_search)//搜索关键字
+
+export const getMvDetail = createRequest('get', Api_MvDetail) //获取 mv 数据
+
+export const getCommentMv = (params: {
+  id: string, limit?: number, offset?: number, before?: number}) => createRequest('get', Api_commentMv)(params)

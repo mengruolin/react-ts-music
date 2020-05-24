@@ -6,13 +6,10 @@ import { getLoaclStorage, setLoaclStorage } from '@/untils'
 import {connect} from "react-redux"
 import { globalStates } from '@/type/inedx'
 import { CHANGE_CURR_MUSIC, CHANGE_PLAY_LIST } from '@/store/actions'
-import { getPersonalized,
-  getPersonalizedNewsong,
-  getBanner,
-  getPersonalizedMv,
+import {
   getMuiscIsUse,
   getMusicDetail } from '@/api/request'
-import { Toast, List } from 'antd-mobile'
+import { Toast } from 'antd-mobile'
 import { useHistory } from 'react-router-dom'
 
 
@@ -37,50 +34,17 @@ const Search: React.SFC<IProps> = (props) => {
   const [song,setSong] = React.useState<any[]>([])
   const [album,setAlbum] = React.useState<any[]>([])
   const [playList,setPlayList] = React.useState<any[]>([])
-  const [recommendPlaylist, setRecommendPlaylist] = React.useState<[]>([])
-  const [recommendedSong, setRecommendedSong] = React.useState<any[]>([])
-  const [caruseData, setCaruseData] = React.useState<[]>([])
-  const [personalizedMv, setPersonalizedMv] = React.useState<[]>([])
+  //const [recommendPlaylist, setRecommendPlaylist] = React.useState<[]>([])
+  // const [recommendedSong, setRecommendedSong] = React.useState<any[]>([])
+  // const [caruseData, setCaruseData] = React.useState<[]>([])
+  // const [personalizedMv, setPersonalizedMv] = React.useState<[]>([])
+
+  const history = useHistory()
 
   // 初始化Hook
   React.useEffect(() => {
     mounted()
-    resetEf()
   }, [])
-  const history = useHistory()
-
-  const resetEf = async () => {
-    let caruse = await getBanner({type: 2})
-    if(caruse.code === 200) {
-      setCaruseData(() => caruse.banners)
-    } else {
-      Toast.fail('获取独家放送失败!')
-    }
-
-    let res = await getPersonalized({limit: 9})
-    if(res.code === 200) {
-      setRecommendPlaylist(res.result)
-    } else {
-      Toast.fail('获取推荐歌单失败!')
-    }
-    
-    let recommendedSong = await getPersonalizedNewsong({limit: 10})
-
-    if(recommendedSong.code === 200) {
-      setRecommendedSong(recommendedSong.result)
-    } else {
-      Toast.fail('获取推荐歌曲失败!')
-    }
-
-    let Mv = await getPersonalizedMv()
-
-    if(Mv.code === 200) {
-      setPersonalizedMv(Mv.result)
-    } else {
-      Toast.fail('获取推荐Mv失败!')
-    }
-  }
-
 
   const mounted = async () => {
     //默认搜索关键字
@@ -111,38 +75,44 @@ const Search: React.SFC<IProps> = (props) => {
     return () => {
       setFlag(() => false)
     }
-  }, [searchWorld])
+  }, [searchWorld, flag])
 
   const handleClickMusicItem = async (index: number) => {
-    let isPlay = await getMuiscIsUse({
-      id: recommendedSong[index].id
-    })
-    if (isPlay.success) {
-      window.player.play()
-      let musicDetail = await getMusicDetail({
-        ids: recommendedSong[index].id
+    try {
+      let isPlay = await getMuiscIsUse({
+        id: song[index].id
       })
-      if (musicDetail.songs[0]) {
-        props.changeCurrMusic(musicDetail.songs[0])
-        props.changeGlobalList([musicDetail.songs[0]])
+      if (isPlay.success) {
+        let musicDetail = await getMusicDetail({
+          ids: song[index].id
+        })
+        if (musicDetail.songs[0]) {
+          props.changeCurrMusic(musicDetail.songs[0])
+          props.changeGlobalList([musicDetail.songs[0]])
+          window.player.play()
+        } else {
+          Toast.fail('歌曲播放失败！')
+        }
       } else {
-        Toast.fail('歌曲播放失败！')
+        Toast.fail(isPlay.message)
       }
-    } else {
-      Toast.fail(isPlay.message)
+    } catch (error) {
+      Toast.fail(error)
     }
   }
 
   async function searchMount(searchWorld: any) {
     const searchList = await getSearchMultimatch({ keywords: searchWorld, type: 1018})
-    if(searchList.result.playList){
-      setPlayList(()=>searchList.result.playList.playLists || [])
-    }
-    if(searchList.result.album){
-      setAlbum(()=>searchList.result.album.albums || [])
-    }
-    if(searchList.result.song.songs){
-      setSong(()=>searchList.result.song.songs || [])
+    if (Object.keys(searchList.result).length > 0) {
+      if(searchList.result.playList){
+        setPlayList(()=>searchList.result.playList.playLists || [])
+      }
+      if(searchList.result.album){
+        setAlbum(()=>searchList.result.album.albums || [])
+      }
+      if(searchList.result.song.songs){
+        setSong(()=>searchList.result.song.songs || [])
+      }
     }
   }
   const getSearchChangeWorld = (value: string) => {
@@ -154,32 +124,25 @@ const Search: React.SFC<IProps> = (props) => {
     setSearchWorld("")
     setFlag(() => false)
   }
-  const showDetail =(item:any):any=>{
+  const showDetail =(item:any):any => {
     history.push("/songMenu",{id:item.id})
     var arr1 = getLoaclStorage('localSearch');
     if(arr1){
-      for(var i=0;i<arr1.length;i++){
-        if(arr1[i].id !==item.id){
-          var arr =[];
-          arr.push({name:item.name,id:item.id})
-          arr.push(...arr1)
-          for(var k=0;k<arr.length-1;k++){
-            for(var j=k+1;j<arr.length;j++){
-                if(arr[k].id==arr[j].id){
-                    arr.splice(j--,1);
-                }
-            }
-        }
-          setLoaclStorage('localSearch',arr)
-        }
-      }
+      let hasL: boolean = arr1.some((v: any) => v.id === item.id)
+      !hasL && setLoaclStorage('localSearch',[...arr1, {name:item.name,id:item.id}])
     }else{
       setLoaclStorage('localSearch',[{name:item.name,id:item.id}])
-
-    }    
+    }
   } 
-  const handleOnDetail = (id:any)=>{
+  const handleOnDetail = (id:any) =>{
     history.push("/songMenu",{id})
+  }
+
+  // 清空搜索历史
+  const handleClearSearchHistory = () => {
+    setLoaclStorage('localSearch', '')
+    const localSearch = getLoaclStorage('localSearch') || []
+    setHistorySearch(() => localSearch)
   }
   return (
     <div className={styles._search}>
@@ -187,15 +150,32 @@ const Search: React.SFC<IProps> = (props) => {
         <SearchBar placeholder={searchDefault} value={searchWorld} onCancel={() => handleOnCancel()} onChange={(value) => getSearchChangeWorld(value)} />
       </div>
       {
-        searchListFlag ? <div className={styles._main}>
-          <div>搜索历史</div>
-          <div className={styles.localSearch}>
-            {
-              historySearch.map((item: any, key: number) => (
-              <span key={item.id} onClick={()=>{handleOnDetail(item.id)}}>{item.name}</span>
-              ))
-            }
-          </div>
+        searchListFlag
+        ? 
+        <div className={styles._main}>
+          {
+            historySearch[0] &&
+            <>
+            <div className={styles.localHistory_title}>
+              <span>
+              搜索历史
+              </span>
+              <div
+                className={styles.clearSearchHistory}
+                onClick={handleClearSearchHistory}>
+                  清空
+                  <i className="icon-font c-ml20">&#xe625;</i>
+              </div>
+            </div>
+            <div className={styles.localSearch}>
+              {
+                historySearch.map((item: any, key: number) => (
+                <span key={item.id} onClick={()=>{handleOnDetail(item.id)}}>{item.name}</span>
+                ))
+              }
+            </div>
+            </>
+          }
           <div>热搜</div>
           {hotSearchList.map((item: any, key: number) => (
             <div key={key} className={styles.hotSearchList}>
@@ -206,18 +186,18 @@ const Search: React.SFC<IProps> = (props) => {
               <span className={styles.count}>{item.score}</span>
             </div>
           ))}
-        </div> : 
+        </div>
+        :
         <div className={styles._searchList}>
           {
-            song?
-            song.map((item,index)=>(
-            <p key={item.id} onClick={()=>{handleClickMusicItem(index)}}>
-              <i className="icon-font">&#xe64c;</i>
-              {item.name}
-              <span className="icon-font">&#xe655;</span>
-              </p>
+            song[0] &&
+            song.map((item: any, index: number)=>(
+              <div className={styles.search_Item} key={item.id} onClick={()=>{handleClickMusicItem(index)}}>
+                <i className="icon-font">&#xe64c;</i>
+                {item.name}
+                <span className="icon-font">&#xe655;</span>
+              </div>
             ))
-            :<></>
           }
           {
             album?
