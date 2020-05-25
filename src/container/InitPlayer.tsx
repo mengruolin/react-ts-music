@@ -46,7 +46,7 @@ const InitPlayer: React.SFC<IProps> = (props) => {
 
   return (
     <>
-      <audio id="globalAudio"></audio>
+      <audio id="globalAudio" src="https://music.163.com/song/media/outer/url?id=1351219081" />
     </>
   )
 }
