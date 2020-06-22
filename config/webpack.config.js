@@ -29,6 +29,9 @@ const postcssNormalize = require('postcss-normalize');
 
 const appPackageJson = require(paths.appPackageJson);
 
+// https://github.com/evrone/postcss-px-to-viewport
+const postcssPxToViewport = require('postcss-px-to-viewport');
+
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
@@ -111,6 +114,18 @@ module.exports = function(webpackEnv) {
             // so that it honors browserslist config in package.json
             // which in turn let's users customize the target behavior as per their needs.
             postcssNormalize(),
+            // https://github.com/evrone/postcss-px-to-viewport
+            postcssPxToViewport({
+              unitToConvert: 'px',
+              viewportWidth: 750, // (Number) The width of the viewport.
+              viewportHeight: 1334, // (Number) The height of the viewport.
+              unitPrecision: 3, // (Number) The decimal numbers to allow the REM units to grow to.
+              viewportUnit: 'vw', // (String) Expected units.
+              selectorBlackList: ['.ignore', '.hairlines', '.list-row-bottom-line', '.list-row-top-line'], // (Array) The selectors to ignore and leave as px.
+              minPixelValue: 1, // (Number) Set the minimum pixel value to replace.
+              mediaQuery: false, // (Boolean) Allow px to be converted in media queries.
+              exclude: /\/node_modules\//
+            }),
           ],
           sourceMap: isEnvProduction && shouldUseSourceMap,
         },
