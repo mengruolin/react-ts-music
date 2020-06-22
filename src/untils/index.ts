@@ -1,5 +1,8 @@
+import moment from 'moment'
+
+
 /**
- * 
+ * 歌词播放时间解析
  * @param text 
 */
 export function parseLyric(text: string) {
@@ -32,7 +35,8 @@ export function parseLyric(text: string) {
 
 
 /***
- *@param time s
+ * 格式化时间
+ *@param time
 */
 export const adjustTime = (time: string | number): string => {
 
@@ -45,6 +49,10 @@ export const adjustTime = (time: string | number): string => {
   return `${m}:${s}`
 }
 
+/**
+ * 格式化时间
+ * @param m 秒
+ */
 const adjustTimeType = (m: number | string) => {
   switch (String(m).length) {
     case 0:
@@ -60,6 +68,10 @@ const adjustTimeType = (m: number | string) => {
   return m
 }
 
+/**
+ * 格式化播放数量
+ * @param count 播放数量
+ */
 export const getCNParseInt = (count: string | number): string => {
   const intCount = parseInt(String(count))
   const strCount = intCount.toString()
@@ -74,4 +86,35 @@ export const getCNParseInt = (count: string | number): string => {
     count = (intCount / 100000000).toFixed(2) + '亿'
     return count
   }
+}
+
+/**
+ * 获取 localStorge 中的值
+ * @param key localStorge Key 值
+ */
+export const getLoaclStorage = (key: string): any => {
+  return !window.localStorage.getItem(key) ? null 
+    : JSON.parse(window.localStorage.getItem(key) as string)
+}
+
+/**
+ * 存储 localStorge 中的值
+ * @param key localStorge Key 值
+ *        val localStorge value
+ */
+export const setLoaclStorage = (key: string, val: any): void => {
+  const preData: any = getLoaclStorage(key)
+
+  if (!preData) {
+    window.localStorage.setItem(key, JSON.stringify(val))
+  } else {
+    window.localStorage.setItem(key, JSON.stringify(val))
+  }
+}
+
+
+// Moment
+export const DataFromNow = (Date: Date): string => {
+  moment.locale('zh-cn')
+  return moment(Date).fromNow()
 }

@@ -52,7 +52,7 @@ const Home: React.SFC<IProp> = (props: IProp) => {
 
   React.useEffect(() => {
     if (playList[0]) {
-      const onUpdata = window.player.on('timeupdate', musicUpdata)
+      let onUpdata = window.player.on('timeupdate', musicUpdata)
 
       setPlay(() => {
         return window.player.paused ? false : true

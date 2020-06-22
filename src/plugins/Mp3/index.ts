@@ -29,8 +29,9 @@ export default class Mp3 {
   private keepPlay: boolean = false
   private musicTitle: string = 'https://music.163.com/song/media/outer/url?id='
 
-  private readlyEventCallback: Function[] = []
-  private timeUpdataEventCallback: Function[] = []
+  private uid: number = 0
+  private readlyEventCallback: Map<number, Function> = new Map()
+  private timeUpdataEventCallback: Map<number, Function> = new Map()
 
 
   //
@@ -173,8 +174,11 @@ export default class Mp3 {
     this.player.play()
   }
 
-  private randomPlay(): void {
-
+  private randomPlay() {
+    if (this.playList.length === 1) {
+      return this.player.play()
+    }
+    
     let randomNum = Math.floor(Math.random() * this.playList.length)
     while (randomNum === this.inMusic) {
       randomNum = Math.floor(Math.random() * this.playList.length)
@@ -241,30 +245,28 @@ export default class Mp3 {
   public remove(eventInfo: IRemoveListenType): void {
     switch (eventInfo.type) {
       case 'readly':
-        //cbData = this.addReadlyEvent(callback)
-        this.readlyEventCallback.splice(eventInfo.index, 1)
+        this.readlyEventCallback.delete(eventInfo.index)
         break
       case 'timeupdate':
-        //cbData = this.addTimeupdateEvent(callback)
-        this.timeUpdataEventCallback.splice(eventInfo.index, 1)
+        this.timeUpdataEventCallback.delete(eventInfo.index)
         break
     }
   }
   
   private addReadlyEvent(fn: Function): IRemoveListenType {
     
-    this.readlyEventCallback.push(fn)
+    this.readlyEventCallback.set(++this.uid, fn)
     return {
       type: 'readly',
-      index: this.readlyEventCallback.length - 1
+      index: this.uid
     }
   }
 
   public addTimeupdateEvent(fn: Function): IRemoveListenType {
-    this.timeUpdataEventCallback.push(fn)
+    this.timeUpdataEventCallback.set(++this.uid, fn)
     return {
       type: 'timeupdate',
-      index: this.timeUpdataEventCallback.length - 1
+      index: this.uid
     }
   }
 }

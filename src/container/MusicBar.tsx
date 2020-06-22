@@ -24,6 +24,12 @@ const MusicBar: React.SFC<IProps> = (props) => {
   const [currTime, setCurrTime ] = React.useState<number>(0)
   const [playList, setPlayList] = React.useState({})
 
+  const { changeCurrMusic, currMusicInfo } = props
+  const musicReady = React.useMemo(() => (info: IGetMusicInfo) => {
+    setIndexLyric(0)
+    changeCurrMusic(playList[info.index])
+  }, [playList, changeCurrMusic])
+
   React.useEffect(() => {
    setPlayList(props.globalPlayList)
   }, [props.globalPlayList])
@@ -38,18 +44,13 @@ const MusicBar: React.SFC<IProps> = (props) => {
         window.player.remove(onUpdata)
       }
     }
-  }, [playList, props.currMusicInfo.detailInfo.id])
+  }, [playList, currMusicInfo.detailInfo.id, musicReady])
 
   React.useEffect(() => {
-    if (indexLyric < props.currMusicInfo.lyric.length - 1 && currTime * 1000 >= props.currMusicInfo.lyric[indexLyric+1][0]) {
+    if (indexLyric < currMusicInfo.lyric.length - 1 && currTime * 1000 >= currMusicInfo.lyric[indexLyric+1][0]) {
       setIndexLyric(indexLyric + 1)
     }
-  }, [currTime, indexLyric, props.currMusicInfo.lyric])
-
-  const musicReady = async (info: IGetMusicInfo) => {
-    setIndexLyric(0)
-    props.changeCurrMusic(playList[info.index])
-  }
+  }, [currTime, indexLyric, currMusicInfo.lyric])
 
   const musicUpdata = (info: IGetMusicInfo) => {
     setCurrTime(info.currentTime)
@@ -66,13 +67,15 @@ const MusicBar: React.SFC<IProps> = (props) => {
   return (
     <div className={styles._musicBar}>
       <div className={styles.playerCover}>
-        {props.currMusicInfo.detailInfo.name ?
-          <img src={`${props.currMusicInfo.detailInfo.al.picUrl}?param=80y80`} alt="" className={play? `${styles.coverRotate}` : ''} />
-          : <></>
+        {currMusicInfo.detailInfo.name &&
+          <img
+            src={`${currMusicInfo.detailInfo.al.picUrl}?param=80y80`}
+            className={play ? `${styles.coverRotate}` : ''}
+            alt="" />
         }
       </div>
       <div className={styles.lyricBox} onClick={() => history.push('/player')}>
-        <span>{props.currMusicInfo.lyric[indexLyric][1]}</span>
+        <span>{currMusicInfo.lyric[indexLyric] && currMusicInfo.lyric[indexLyric][1]}</span>
       </div>
       <div className={styles.btnGroup}>
         <Button className={`${styles.allBtn} ${styles.playBtn}`} onClick={handlePlayBtn}>

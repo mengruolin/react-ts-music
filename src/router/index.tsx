@@ -10,6 +10,8 @@ const SongMenu = lazy(() => import('@/container/SongMenu'))
 const songResult = lazy(() => import('@/components/SongResults'))
 const myMenu = lazy(() => import('@/container/MyMenu'))
 const Search = lazy(() => import('@/components/Search'))
+const MvPlay = lazy(() => import('@/components/MvPlay'))
+const NotFoundPage = lazy(() => import('@/components/notFoundPage'))
 
 
 export default function () {
@@ -26,6 +28,8 @@ export default function () {
             <Route exact path="/songResult" component={songResult}></Route>
             <Route exact path="/myMenu" component={myMenu}></Route>
             <Route exact path="/search" component={Search}></Route>
+            <Route exact path="/mvPlay" component={MvPlay}></Route>
+            <Route path="*" component={NotFoundPage}></Route>
           </Switch>
         </DefaultLayout>
       </BrowserRouter>

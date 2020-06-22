@@ -52,3 +52,6 @@ export const Api_banner: string = '/banner'   //轮播图
 
 export const Api_toplistDetail: string = '/toplist/detail'  //所有榜单内容摘要
 
+export const Api_MvDetail: string = '/mv/detail'  //获取 mv 数据
+
+export const Api_commentMv: string = '/comment/mv'  //mv 评论
